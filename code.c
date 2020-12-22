@@ -68,11 +68,25 @@ void init_personnage_enne(personnage p){
   p->nom[5] = 'l';
 }
 
+void init_coup(coup cp){
+  cp -> degats = 0;
+  cp->etata->trdef = 0;
+  cp->etata->esquive =0;
+  cp->etata->multidmg = 1;
+  cp->etata->traterre = 0;
+  cp->etate->trdef = 0;
+  cp->etate->esquive =0;
+  cp->etate->multidmg = 1;
+  cp->etate->traterre = 0;
+  cp->priorite =0;
+  cp->precision = 0;
+}
+
 void attaque(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
   /*Degats*/
   coupperso -> degats = (p -> force)*p->etat->multidmg;
 
-  /*priorite*/
+  /*Priorite*/
   coupperso->priorite = (p -> agilite) + (p -> dexterite)*1/4;
 
   /*Precision de l'attaque, le minimul sera 10%, il n'y a pas de maximum defini*/
@@ -92,11 +106,10 @@ void attaque(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = 
 }
 
 void defense (coup coupperso,personnage p, personnage e){ /*p = Attaquant, e = Attaqué*/
-
   /*Degats*/
   coupperso -> degats = 0;
 
-  /*priorite*/
+  /*Priorite*/
   coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1.5;
 
   /*Etats allie*/
@@ -110,30 +123,29 @@ void defense (coup coupperso,personnage p, personnage e){ /*p = Attaquant, e = A
   coupperso->etate->esquive =0;
   coupperso->etate->multidmg = 1;
   coupperso->etate->traterre = 0;
-
 }
 
 
 
-void esquive (coup coupperso personnage p, personnage e){ 
-  /*degats*/
+void esquive (coup coupperso personnage p, personnage e){
+  /*Degats*/
   coupperso ->  degats = 0;
-  
-  /*priorite*/
+
+  /*Priorite*/
   coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1,5;
-  
+
   /*Etats allie */
   coupperso -> etata -> trdef = 0;
   coupperso -> etata -> esquive = 1;
   coupperso -> etata -> multidmg = 1;
   coupperso -> etata -> traterre = 0;
-  
+
   /* Etats ennemi */
   coupperso -> etate -> trdef = 0;
   coupperso -> etate -> esquive = 0;
   coupperso -> etate -> multidmg = 1;
   coupperso -> etate -> traterre = 0;
-  
+
 }
 
 void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
@@ -159,6 +171,25 @@ void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e =
   coupperso->etate->traterre = 0;
 }
 
+void decisionia(coup a, personnage ia, personnage perso){
+  int decision;
+  decision = random(0, 100);
+  if (decision<20){
+    attaque(a, ia, perso);
+  }
+  if(decision<40 && decision>=20){
+    defense(a, ia, perso);
+  }
+  if(decision<60 && decision>=40){
+    esquive(a, ia, perso);
+  }
+  if(decision<80 && decision>=60){
+    couppied(a, ia, perso);
+  }
+  if(decision<=100 && decision>=80){
+    labourage(a, ia, perso);
+  }
+}
 
 int gameover(int go){
   if (go==1){
@@ -309,15 +340,44 @@ void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
   findetour(aa, bb);
 }
 
-
+void explications(){
+  printf("");
+}
 
 int main(){
   personnage principal;
   personnage ennemi;
+  coup coupperso;
+  coup coupenne;
+  int go;
+  int nbcoup;
+  go =0;
   init_personnage(principal);
   init_personnage_prin(principal);
   init_personnage(ennemi);
   init_personnage_enne(ennemi);
+  init_coup(coupperso);
+  init_coup(coupenne);
 
+
+  while(nbcoup>4){
+    printf("quel sera votre coup?\n");
+    printf("0 = attaque, 1 = defense, 2 = esquive\n");
+    printf("3 = coup de pied, 4 = Mettre a terre, 5 = explications\n")
+    scanf("%d ", nbcoup);
+    switch(nbcoup){
+      case 0:
+
+      case 1:
+      case 2:
+      case 3:
+      case 4:
+      case 5:
+        explications();
+    }
+  }
+  while(go = 0){
+
+  }
   exit(1);
 }
