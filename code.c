@@ -278,9 +278,9 @@ void calcul_attaque_ennemi(coup b, personnage aa, personnage bb){
     bb -> etat -> multidmg = bb -> etat -> multidmg * b -> etata -> multidmg;
     bb -> etat -> traterre += b -> etata -> traterre;
     /*Etats ennemis*/
-    aa->etat->trdef += b->etate->trdef;
-    aa->etat->esquive = b->etate->esquive;
-    aa->etat->multidmg = bb->etat->multidmg * b->etate->multidmg;
+    aa->etat->trdef += b -> etate -> trdef;
+    aa->etat->esquive = b -> etate->esquive;
+    aa->etat->multidmg = bb -> etat -> multidmg * b -> etate -> multidmg;
     aa->etat->traterre += b->etate->traterre;
   }
 
@@ -407,3 +407,8 @@ int main(){
   }
   exit(1);
 }
+
+
+
+
+
