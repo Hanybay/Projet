@@ -127,7 +127,7 @@ void defense (coup coupperso,personnage p, personnage e){ /*p = Attaquant, e = A
 
 
 
-void esquive (coup coupperso personnage p, personnage e){
+void esquive (coup coupperso,personnage p, personnage e){
   /*Degats*/
   coupperso ->  degats = 0;
 
@@ -369,6 +369,19 @@ void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
 void explications(){
   printf("");
 }
+
+
+void explication(){
+  printf("Pour jouer à notre fabuleux jeux, vous disposez d'une action parmis 5 chaque tour.
+Attaque : vous permets d'attaquer votre ennemi, sans changement d'état.\n
+Défense : Réduit les dégats pendant 2 tours.\n
+Esquive : Réduit les dégats à 100%.\n
+Labourage : vous permets de mettre à terre votre ennemi.\n
+Coup de pied : Inflige de lourd dégat, précision moyenne.\n");
+}
+
+
+
 
 int main(){
   personnage principal;
