@@ -141,22 +141,48 @@ void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e =
   coupperso -> degats = ((p -> force)/2 + p->dexterite)*1.25*p->etat->multidmg;
 
   /*priorite*/
-  coupperso->priorite = (p -> agilite) + (p -> dexterite)*1/4;
+  coupperso -> priorite = (p -> agilite) + (p -> dexterite)*1/4;
 
   /*Precision*/
-  coupperso -> precision = 40 + p->dexterite - e->agilite;
+  coupperso -> precision = 40 + p -> dexterite - e -> agilite;
 
   /*Etats allie*/
-  coupperso->etata->trdef = 0;
-  coupperso->etata->esquive =0;
-  coupperso->etata->multidmg = 1;
-  coupperso->etata->traterre = 0;
+  coupperso -> etata -> trdef = 0;
+  coupperso -> etata -> esquive =0;
+  coupperso -> etata -> multidmg = 1;
+  coupperso -> etata -> traterre = 0;
 
   /*Etats ennemis*/
-  coupperso->etate->trdef = 0;
-  coupperso->etate->esquive =0;
-  coupperso->etate->multidmg = 1;
-  coupperso->etate->traterre = 0;
+  coupperso -> etate -> trdef = 0;
+  coupperso -> etate -> esquive =0;
+  coupperso -> etate -> multidmg = 1;
+  coupperso -> etate -> traterre = 0;
+}
+
+
+
+void labourage(coup coupperso, personnage p, personnage e){
+  /* Degats */
+  coupperso -> degats = (p -> force)*1/2 * p -> etat -> multidmg;
+  
+  /* priorite */
+  coupperso -> priorite = 0;
+  
+  /* Precision */
+  coupperso -> precision = 60 + p -> dexterite - e -> agilite;
+  
+  /*Etats allie*/
+  coupperso -> etata -> trdef = 0;
+  coupperso -> etata -> esquive = 0;
+  coupperso -> etata -> multidmg = 1;
+  coupperso -> etata -> traterre = 0;
+  
+  /*Etats ennemis*/
+  coupperso -> etate -> trdef = 0;
+  coupperso -> etate -> esquive =0;
+  coupperso -> etate -> multidmg = 1;
+  coupperso -> etate -> traterre = 1;
+  
 }
 
 
@@ -184,22 +210,22 @@ void calcul_attaque_allie(coup a, personnage aa, personnage bb){
       a->precision = 10;
     }
   }
-  if(a->precision>=precis){
-    bb->vie -= (a->degats*aa->etat->multidmg);
+  if(a -> precision >= precis){
+    bb -> vie -= (a -> degats*aa -> etat -> multidmg);
     /*Etat allie*/
     aa->etat->trdef += a->etata->trdef;
     aa->etat->esquive = a->etata->esquive;
     aa->etat->multidmg = aa->etat->multidmg * a->etata->multidmg;
     aa->etat->traterre += a->etata->traterre;
     /*Etats ennemis*/
-    bb->etat->trdef += a->etate->trdef;
-    bb->etat->esquive = a->etate->esquive;
-    bb->etat->multidmg = aa->etate->multidmg * b->etat->multidmg;
-    bb->etat->traterre += a->etate->traterre;
+    bb -> etat -> trdef += a -> etate -> trdef;
+    bb -> etat -> esquive = a -> etate -> esquive;
+    bb -> etat -> multidmg = aa -> etate -> multidmg * b -> etat -> multidmg;
+    bb -> etat -> traterre += a -> etate -> traterre;
   }
   else{
-    if(bb->etat->esquive ==1 && a->degats !=0){
-      bb->etat->esquive = 2;
+    if(bb -> etat -> esquive == 1 && a -> degats !=0){
+      bb -> etat -> esquive = 2;
     }
   }
 }
@@ -207,19 +233,19 @@ void calcul_attaque_allie(coup a, personnage aa, personnage bb){
 void calcul_attaque_ennemi(coup b, personnage aa, personnage bb){
   int precis;
   precis = random(0,100);
-  if (aa->etat-> esquive == 1){
-    b->precision -= 0.5* aa->agilite
-    if (b->precision <10){
-      b->precision = 10;
+  if (aa -> etat -> esquive == 1){
+    b -> precision -= 0.5* aa -> agilite
+    if (b -> precision <10){
+      b -> precision = 10;
     }
   }
-  if(b->precision>=precis){
-    aa->vie -= (b->degats*bb->etat->multdmg);
+  if(b ->precision>=precis){
+    aa -> vie -= (b -> degats*bb -> etat -> multdmg);
     /*Etats allie*/
-    bb->etat->trdef += b->etata->trdef;
-    bb->etat->esquive = b->etata->esquive;
-    bb->etat->multidmg = bb->etat->multidmg * b->etata->multidmg;
-    bb->etat->traterre += b->etata->traterre;
+    bb -> etat -> trdef += b -> etata -> trdef;
+    bb -> etat -> esquive = b -> etata -> esquive;
+    bb -> etat -> multidmg = bb -> etat -> multidmg * b -> etata -> multidmg;
+    bb -> etat -> traterre += b -> etata -> traterre;
     /*Etats ennemis*/
     aa->etat->trdef += b->etate->trdef;
     aa->etat->esquive = b->etate->esquive;
@@ -255,15 +281,15 @@ void findetour(personnage a, personnage b){
   if(a->etat->esquive == 2){
     a->etat->multidmg = a ->etat->multidmg*1.5;
   }
-  if(b->etat->esquive == 2){
-    b->etat->multidmg = b ->etat->multidmg*1.5;
+  if(b -> etat -> esquive == 2){
+    b -> etat -> multidmg = b ->etat->multidmg*1.5;
   }
-  a->etat->esquive = 0;
-  b->etat->esquive = 0;
+  a -> etat -> esquive = 0;
+  b -> etat -> esquive = 0;
 
-  if (a->etat->traterre = 1){
-    b->etat->multidmg = b->etat->multidmg*2;
-    a->etat->traterre = 0;
+  if (a -> etat -> traterre = 1){
+    b -> etat -> multidmg = b -> etat -> multidmg*2;
+    a -> etat -> traterre = 0;
   }
   if (b->etat->traterre = 1){
     a->etat->multidmg = a->etat->multidmg*2;
