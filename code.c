@@ -96,24 +96,27 @@ coup attaque(personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
   return coupperso; /*coup inflige a l'ennemi*/
 }
 
-/*coup defense (personnage p, personnage e){ /*p = Attaquant, e = Attaqué*/
-  /*coup coupperso;
+coup defense (personnage p, personnage e){ /*p = Attaquant, e = Attaqué*/
+  coup coupperso;
+  
   /*Degats*/
 
+  coupperso -> etate  ->multidmg = coupperso->etate->multidmg *0.66
+  
   /*priorite*/
-
+  
   /*changement d'état*/
-
+  
   /*return coupperso; /*coup inflige a l'ennemi*/
-/*}
-
-/*coup esquive (personnage p, personnage e){
+  /*}
+  
+  /*coup esquive (personnage p, personnage e){
   /*degats*/
-
+  
   /*priorite*/
 
   /*changement d'etat*/
-/*}*/
+}
 
 void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
   int egalite;
