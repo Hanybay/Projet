@@ -71,18 +71,14 @@ void init_personnage_enne(personnage p){
   p->nom[5] = 'l';
 }
 
-coup attaque(personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
-  coup coupperso;
+coup attaque(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
 
   /*Degats*/
   coupperso -> degats = (p -> force)*p->etat->multidmg;
   /*priorite*/
 
-  coupperso->priorite = (p -> dexterite) + (p -> agilite)*1/4;
+  coupperso->priorite = (p -> agilite) + (p -> dexterite)*1/4;
   coupperso -> precision = 90 + p->dexterite - e->agilite;
-  if ((coupperso ->precision) < 33 ){
-    coupperso -> precision = 33;
-  }
   /*Etats allie*/
   coupperso->etata->trdef = 0;
   coupperso->etata->esquive =0;
