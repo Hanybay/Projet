@@ -68,7 +68,7 @@ void init_personnage_enne(personnage p){
   p->nom[5] = 'l';
 }
 
-coup attaque(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
+void attaque(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
   /*Degats*/
   coupperso -> degats = (p -> force)*p->etat->multidmg;
 
@@ -135,7 +135,7 @@ void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e =
 
   /*Precision*/
   coupperso -> precision = 40 + p->dexterite - e->agilite;
-  
+
   /*Etats allie*/
   coupperso->etata->trdef = 0;
   coupperso->etata->esquive =0;
