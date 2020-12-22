@@ -82,11 +82,12 @@ coup attaque(personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
   if ((coupperso ->precision) < 33){
     coupperso -> precision = 33;
   }
-  /*Etats*/
+  /*Etats allie*/
   coupperso->etata->trdef = 0;
   coupperso->etata->esquive =0;
   coupperso->etata->multidmg = 0;
   coupperso->etata->traterre = 0;
+  /*Etats ennemis*/
   coupperso->etate->trdef = 0;
   coupperso->etate->esquive =0;
   coupperso->etate->multidmg = 0;
