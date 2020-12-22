@@ -176,25 +176,25 @@ void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e =
 void labourage(coup coupperso, personnage p, personnage e){
   /* Degats */
   coupperso -> degats = (p -> force)*1/2 * p -> etat -> multidmg;
-  
+
   /* priorite */
   coupperso -> priorite = 0;
-  
+
   /* Precision */
   coupperso -> precision = 60 + p -> dexterite - e -> agilite;
-  
+
   /*Etats allie*/
   coupperso -> etata -> trdef = 0;
   coupperso -> etata -> esquive = 0;
   coupperso -> etata -> multidmg = 1;
   coupperso -> etata -> traterre = 0;
-  
+
   /*Etats ennemis*/
   coupperso -> etate -> trdef = 0;
   coupperso -> etate -> esquive =0;
   coupperso -> etate -> multidmg = 1;
   coupperso -> etate -> traterre = 1;
-  
+
 }
 
 void decisionia(coup a, personnage ia, personnage perso){
@@ -366,10 +366,6 @@ void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
   findetour(aa, bb);
 }
 
-void explications(){
-  printf("");
-}
-
 
 void explication(){
   printf("Pour jouer à notre fabuleux jeux, vous disposez d'une action parmis 5 chaque tour.\n");
@@ -382,7 +378,12 @@ void explication(){
   
 }
 
-
+void affichage_stats(personnage p){
+  printf("Vie / Vie Max : %d, %d\n", p->vie, p->vitalite);
+  printf("Force : %d\n", p->force);
+  printf("Agilite : %d\n", p->agilite);
+  printf("Dexterite : %d\n", p->dexterite);
+}
 
 int main(){
   personnage principal;
@@ -398,31 +399,48 @@ int main(){
   init_personnage_enne(ennemi);
   init_coup(coupperso);
   init_coup(coupenne);
-
-
-  while(nbcoup>4){
+  printf("quel est votre nom (20 lettres maximum)?  ");
+  scanf("%s ", principal->nom);
+  while(nbcoup>5){
     printf("quel sera votre coup?\n");
     printf("0 = attaque, 1 = defense, 2 = esquive\n");
-    printf("3 = coup de pied, 4 = Mettre a terre, 5 = explications\n")
+    printf("3 = coup de pied, 4 = Mettre a terre, 5 = explications\n");
+    printf("6 = Vos stats, 7 = stats ennemi\n")
     scanf("%d ", nbcoup);
     switch(nbcoup){
       case 0:
-
+        attaque(coupperso, principal, ennemi);
+        break;
       case 1:
+        defense(coupperso, principal, ennemi);
+        break;
       case 2:
+        esquive(coupperso, principal, ennemi);
+        break;
       case 3:
+        couppied(coupperso, principal, ennemi);
+        break;
       case 4:
+        labourage(coupperso, principal, ennemi);
+        break;
       case 5:
         explications();
+        break;
+      case 6:
+        affichage_stats(principal);
+        break;
+      case 7 :
+        affichage_stats(ennemi);
+        break;
     }
+
   }
+  decisionia(coupenne, ennemi, principal);
+  calcul_du_tour(coupperso, coupenne, principal, ennemi);
+  affichage_stats(principal);
+  affichage_stats(ennemi);
   while(go = 0){
 
   }
   exit(1);
 }
-
-
-
-
-
