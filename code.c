@@ -91,7 +91,6 @@ coup attaque(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = 
   coupperso->etate->multidmg = 1;
   coupperso->etate->traterre = 0;
 
-  return coupperso; /*coup inflige a l'ennemi*/
 }
 
 coup defense (personnage p, personnage e){ /*p = Attaquant, e = Attaqué*/
@@ -99,21 +98,21 @@ coup defense (personnage p, personnage e){ /*p = Attaquant, e = Attaqué*/
 
   /*Degats*/
 
-  coupperso -> etate -> multidmg = coupperso -> etate -> multidmg *0.66;
+  coupperso -> degats = 0;
 
   /*priorite*/
-  coupperso -> priorite = ((p -> agilite ) + (p -> dexterite )*1/4)*1/2;
+  coupperso -> priorite = ((p -> agilite ) + (p -> dexterite )*1/4)*1.5;
 
   /*Etats allie*/
   coupperso -> etata -> trdef = 2;
   coupperso -> etata -> esquive = 0;
-  coupperso -> etata -> multidmg = 0,66 ;
+  coupperso -> etata -> multidmg = 0.66 ;
   coupperso -> etata -> traterre = 0;
 
   /* Etats ennemi */
   coupperso->etate->trdef = 0;
   coupperso->etate->esquive =0;
-  coupperso->etate->multidmg = 0;
+  coupperso->etate->multidmg = 1;
   coupperso->etate->traterre = 0;
 
 
@@ -129,6 +128,28 @@ coup esquive (personnage p, personnage e){
 
   /*changement d'etat*/
 }
+
+void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
+
+  /*Degats*/
+  coupperso -> degats = ((p -> force)/2 + p->dexterite)*1.25*p->etat->multidmg;
+  /*priorite*/
+
+  coupperso->priorite = (p -> agilite) + (p -> dexterite)*1/4;
+  coupperso -> precision = 40 + p->dexterite - e->agilite;
+  /*Etats allie*/
+  coupperso->etata->trdef = 0;
+  coupperso->etata->esquive =0;
+  coupperso->etata->multidmg = 1;
+  coupperso->etata->traterre = 0;
+
+  /*Etats ennemis*/
+  coupperso->etate->trdef = 0;
+  coupperso->etate->esquive =0;
+  coupperso->etate->multidmg = 1;
+  coupperso->etate->traterre = 0;
+}
+
 
 int gameover(int go){
   if (go==1){
@@ -150,8 +171,8 @@ void calcul_attaque_allie(coup a, personnage aa, personnage bb){
   precis = random(0,100);
   if (bb->etat-> esquive == 1){
     a->precision -= 0.5* bb->agilite
-    if (a->precision <33){
-      a->precision = 33;
+    if (a->precision <10){
+      a->precision = 10;
     }
   }
   if(a->precision>=precis){
@@ -179,8 +200,8 @@ void calcul_attaque_ennemi(coup b, personnage aa, personnage bb){
   precis = random(0,100);
   if (aa->etat-> esquive == 1){
     b->precision -= 0.5* aa->agilite
-    if (b->precision <33){
-      b->precision = 33;
+    if (b->precision <10){
+      b->precision = 10;
     }
   }
   if(b->precision>=precis){
@@ -207,7 +228,12 @@ void calcul_attaque_ennemi(coup b, personnage aa, personnage bb){
 void findetour(personnage a, personnage b){
   a->multdmg =1;
   b->multdmg = 1;
-
+  if(a->etat->trdef > 5){
+    a->etat->trdef =5;
+  }
+  if(a->etat->trdef > 5){
+      a->etat->trdef =5;
+  }
   if(a->etat->trdef > 0){
     a->etat->trdef -=1;
     b->etat->multidmg = b->etat->multidmg*0.66;
