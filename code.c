@@ -376,7 +376,12 @@ Labourage : vous permets de mettre à terre votre ennemi.\n
 Coup de pied : Inflige de lourd dégat, précision moyenne.\n");
 }
 
-
+void affichage_stats(personnage p){
+  printf("Vie / Vie Max : %d, %d", p->vie, p->vitalite);
+  printf("Force : %d", p->force);
+  printf("Agilite : %d", p->agilite);
+  printf("Dexterite : %d", p->dexterite);
+}
 
 
 int main(){
@@ -425,6 +430,7 @@ int main(){
         break;
       case 7 :
         affichage_stats(ennemi);
+        break;
     }
 
   }
