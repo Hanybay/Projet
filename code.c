@@ -7,7 +7,7 @@
 typedef struct {
   int trdef;    /*compte le nombre de tour defensif. max 5*/
   int esquive;  /*mode esquive, augmente par 1.5 l'agilite*/
-  int multidmg; /*multiplicateur de dégats*/
+  float multidmg; /*multiplicateur de dégats*/
   int traterre; /*compte le nombre de tour a terre*/
 } etat;
 
