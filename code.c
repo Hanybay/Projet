@@ -91,8 +91,7 @@ void attaque(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = 
   coupperso->etate->traterre = 0;
 }
 
-coup defense (personnage p, personnage e){ /*p = Attaquant, e = Attaqué*/
-  coup coupperso;
+void defense (coup coupperso,personnage p, personnage e){ /*p = Attaquant, e = Attaqué*/
 
   /*Degats*/
   coupperso -> degats = 0;
@@ -112,18 +111,29 @@ coup defense (personnage p, personnage e){ /*p = Attaquant, e = Attaqué*/
   coupperso->etate->multidmg = 1;
   coupperso->etate->traterre = 0;
 
-
-  return coupperso; /*coup inflige a l'ennemi*/
 }
 
 
 
-coup esquive (personnage p, personnage e){
+void esquive (coup coupperso personnage p, personnage e){ 
   /*degats*/
-
+  coupperso ->  degats = 0;
+  
   /*priorite*/
-
-  /*changement d'etat*/
+  coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1,5;
+  
+  /*Etats allie */
+  coupperso -> etata -> trdef = 0;
+  coupperso -> etata -> esquive = 1;
+  coupperso -> etata -> multidmg = 1;
+  coupperso -> etata -> traterre = 0;
+  
+  /* Etats ennemi */
+  coupperso -> etate -> trdef = 0;
+  coupperso -> etate -> esquive = 0;
+  coupperso -> etate -> multidmg = 1;
+  coupperso -> etate -> traterre = 0;
+  
 }
 
 void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
