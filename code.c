@@ -42,7 +42,6 @@ int random(int x, int y){
   return alea;
 }
 
-
 void init_personnage(personnage p){
   p->force = 45 + random(-20, 20);
   p->agilite = 45 + random(-20, 20);
@@ -60,9 +59,7 @@ void init_personnage_prin(personnage p){
   scanf("%s", p->nom);
 }
 
-
 void init_personnage_enne(personnage p){
-
   p->nom[0] = 'M';
   p->nom[1] = 'i';
   p->nom[2] = 'c';
@@ -72,13 +69,15 @@ void init_personnage_enne(personnage p){
 }
 
 coup attaque(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
-
   /*Degats*/
   coupperso -> degats = (p -> force)*p->etat->multidmg;
-  /*priorite*/
 
+  /*priorite*/
   coupperso->priorite = (p -> agilite) + (p -> dexterite)*1/4;
+
+  /*Precision de l'attaque, le minimul sera 10%, il n'y a pas de maximum defini*/
   coupperso -> precision = 90 + p->dexterite - e->agilite;
+
   /*Etats allie*/
   coupperso->etata->trdef = 0;
   coupperso->etata->esquive =0;
@@ -90,23 +89,21 @@ coup attaque(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = 
   coupperso->etate->esquive =0;
   coupperso->etate->multidmg = 1;
   coupperso->etate->traterre = 0;
-
 }
 
 coup defense (personnage p, personnage e){ /*p = Attaquant, e = Attaqué*/
   coup coupperso;
 
   /*Degats*/
-
   coupperso -> degats = 0;
 
   /*priorite*/
-  coupperso -> priorite = ((p -> agilite ) + (p -> dexterite )*1/4)*1.5;
+  coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1.5;
 
   /*Etats allie*/
   coupperso -> etata -> trdef = 2;
   coupperso -> etata -> esquive = 0;
-  coupperso -> etata -> multidmg = 0.66 ;
+  coupperso -> etata -> multidmg = 0.66;
   coupperso -> etata -> traterre = 0;
 
   /* Etats ennemi */
@@ -130,13 +127,15 @@ coup esquive (personnage p, personnage e){
 }
 
 void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
-
   /*Degats*/
   coupperso -> degats = ((p -> force)/2 + p->dexterite)*1.25*p->etat->multidmg;
-  /*priorite*/
 
+  /*priorite*/
   coupperso->priorite = (p -> agilite) + (p -> dexterite)*1/4;
+
+  /*Precision*/
   coupperso -> precision = 40 + p->dexterite - e->agilite;
+  
   /*Etats allie*/
   coupperso->etata->trdef = 0;
   coupperso->etata->esquive =0;
