@@ -232,7 +232,7 @@ void victoire(){
   printf("victoire!");
   gameover(1);
 }
-void calcul_attaque_allie(coup a, personnage aa, personnage bb){
+void calcul_attaque(coup a, personnage aa, personnage bb){
   int precis;
   precis = random(0,100);
   if (bb->etat-> esquive == 1){
@@ -261,35 +261,6 @@ void calcul_attaque_allie(coup a, personnage aa, personnage bb){
   }
 }
 
-void calcul_attaque_ennemi(coup b, personnage aa, personnage bb){
-  int precis;
-  precis = random(0,100);
-  if (aa -> etat -> esquive == 1){
-    b -> precision -= 0.5* aa -> agilite
-    if (b -> precision <10){
-      b -> precision = 10;
-    }
-  }
-  if(b ->precision>=precis){
-    aa -> vie -= (b -> degats*bb -> etat -> multdmg);
-    /*Etats allie*/
-    bb -> etat -> trdef += b -> etata -> trdef;
-    bb -> etat -> esquive = b -> etata -> esquive;
-    bb -> etat -> multidmg = bb -> etat -> multidmg * b -> etata -> multidmg;
-    bb -> etat -> traterre += b -> etata -> traterre;
-    /*Etats ennemis*/
-    aa->etat->trdef += b -> etate -> trdef;
-    aa->etat->esquive = b -> etate->esquive;
-    aa->etat->multidmg = bb -> etat -> multidmg * b -> etate -> multidmg;
-    aa->etat->traterre += b->etate->traterre;
-  }
-
-  else{
-    if(bb->etat->esquive ==1 && a->degats !=0){
-       bb->etat->esquive = 2;
-    }
-  }
-}
 
 void findetour(personnage a, personnage b){
   a->multdmg =1;
@@ -331,29 +302,29 @@ void findetour(personnage a, personnage b){
 void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
   int egalite;
   if(a->priorite > b->priorite){
-    calcul_attaque_allie();
+    calcul_attaque(a, aa, bb);
     if (bb->vie >0){
-      calcul_attaque_ennemi();
+      calcul_attaque(b, bb, aa);
     }
   }
   if(a->priorite < b->priorite){
-    calcul_attaque_ennemi();
+    calcul_attaque(b , bb, aa);
     if (aa->vie >0){
-      calcul_attaque_allie();
+      calcul_attaque(a, aa, bb);
     }
   }
   if(a->priorite == b->priorite){
     egalite = random(0,100);
     if(egalite > 50){
-      calcul_attaque_allie();
+      calcul_attaque(a, aa, bb);
       if (bb->vie >0){
-        calcul_attaque_ennemi();
+        calcul_attaque(b, bb, aa);
       }
     }
     if(egalite <= 50){
-      calcul_attaque_ennemi();
+      calcul_attaque(b, bb, aa);
       if (aa->vie >0){
-        calcul_attaque_allie();
+        calcul_attaque(a, aa, bb);
       }
     }
   }
