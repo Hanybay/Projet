@@ -29,8 +29,8 @@ typedef struct{
   int degats;
   etats etata; /*Etat allié*/
   etats etate; /*Etat ennemi*/
-  int priorite
-  int precision
+  int priorite;
+  int precision;
 }coups;
 
 typedef coups *coup;
@@ -76,10 +76,10 @@ coup attaque(personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
   /*Degats*/
   coupperso -> degats = (p -> force) * (p->etat->multidmg);
   /*priorite*/
-
-  coupperso->priorite = (p -> dexterite) + (p -> agilite)*1/2;
-  coupperso -> precision = 90 + p->dexterite - e->agilite
-  if ((coupperso ->precision) < 33){
+  
+  coupperso->priorite = (p -> dexterite) + (p -> agilite)*1/4;
+  coupperso -> precision = 90 + p->dexterite - e->agilite;
+  if ((coupperso ->precision) < 33 ){
     coupperso -> precision = 33;
   }
   /*Etats allie*/
@@ -101,20 +101,34 @@ coup defense (personnage p, personnage e){ /*p = Attaquant, e = Attaqué*/
   
   /*Degats*/
 
-  coupperso -> etate  ->multidmg = coupperso->etate->multidmg *0.66
+  coupperso -> etate -> multidmg = coupperso -> etate -> multidmg *0.66;
   
   /*priorite*/
+  coupperso -> priorite = ((p -> agilite ) + (p -> dexterite )*1/4)*1/2;
   
-  /*changement d'état*/
+  /*Etats allie*/
+  coupperso -> etata -> trdef = 2;
+  coupperso -> etata -> esquive = 0;
+  coupperso -> etata -> multidmg = 0,66 ;
+  coupperso -> etata -> traterre = 0;
   
-  /*return coupperso; /*coup inflige a l'ennemi*/
-  /*}
+  /* Etats ennemi */
+  coupperso->etate->trdef = 0;
+  coupperso->etate->esquive =0;
+  coupperso->etate->multidmg = 0;
+  coupperso->etate->traterre = 0;
   
-  /*coup esquive (personnage p, personnage e){
+  
+  return coupperso; /*coup inflige a l'ennemi*/
+}
+
+
+
+coup esquive (personnage p, personnage e){
   /*degats*/
   
   /*priorite*/
-
+  
   /*changement d'etat*/
 }
 
