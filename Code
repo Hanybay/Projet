@@ -11,6 +11,8 @@ typedef struct {
   int traterre; /*compte le nombre de tour a terre*/
 } etat;
 
+typedef etat *etats;
+
 typedef struct {
   int vie; /*PV actuel*/
   int force; /*Valeur offensive*/
@@ -25,9 +27,10 @@ typedef personnages *personnage;
 
 typedef struct{
   int degats;
-  int etate; /*etat */
-  int etata; /*etat affligé*/
-  int priorite;
+  etats etata; /*Etat allié*/
+  etats etate; /*Etat ennemi*/
+  int priorite
+  int precision
 }coups;
 
 typedef coups *coup;
@@ -46,7 +49,10 @@ void init_personnage(personnage p){
   p->dexterite = 45 + random(-20, 20);
   p->vitalite = 500 + random(-100, 100);
   p->vie = p->vitalite;
-  p->etat = 1; /*1 = Vie, 0 = vie + a terre, -1= décès*/
+  p->lesetat->trdef = 0;
+  p->lesetat->esquive =0;
+  p->lesetat->multidmg = 1;
+  p->lesetat->traterre = 0;
 }
 
 void init_personnage_prin(personnage p){
@@ -54,9 +60,15 @@ void init_personnage_prin(personnage p){
   scanf("%s", p->nom);
 }
 
+
 void init_personnage_enne(personnage p){
 
-  p->nom[] = "Michel";
+  p->nom[0] = 'M';
+  p->nom[1] = 'i';
+  p->nom[2] = 'c';
+  p->nom[3] = 'h';
+  p->nom[4] = 'e';
+  p->nom[5] = 'l';
 }
 
 coup attaque(personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
