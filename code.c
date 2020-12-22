@@ -372,14 +372,15 @@ void explications(){
 
 
 void explication(){
-  printf("Pour jouer à notre fabuleux jeux, vous disposez d'une action parmis 5 chaque tour.
-Attaque : vous permets d'attaquer votre ennemi, sans changement d'état.\n
-Défense : Réduit les dégats pendant 2 tours.\n
-Esquive : Réduit les dégats à 100%.\n
-Labourage : vous permets de mettre à terre votre ennemi.\n
-Coup de pied : Inflige de lourd dégat, précision moyenne.\n");
+  printf("Pour jouer à notre fabuleux jeux, vous disposez d'une action parmis 5 chaque tour.\n");
+  
+  printf("Attaque : vous permets d'attaquer votre ennemi, sans changement d'état.\n");
+  printf("Défense : Réduit les dégats pendant 2 tours.\n");
+  printf("Esquive : Réduit les dégats à 100%.\n");
+  printf("Labourage : vous permets de mettre à terre votre ennemi.\n");
+  printf("Coup de pied : Inflige de lourd dégat, précision moyenne.\n");
+  
 }
-
 
 
 
