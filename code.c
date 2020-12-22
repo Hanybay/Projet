@@ -74,12 +74,23 @@ void init_personnage_enne(personnage p){
 coup attaque(personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
   coup coupperso;
   /*Degats*/
-  coupperso -> degats = p -> force;
+  coupperso -> degats = (p -> force) * (p->etat->multidmg);
   /*priorite*/
 
-  coupperso->priorite = (p -> agilite) - (p -> dexterite)*1/2;
-  coupperso -> etata = p -> etat;
-  coupperso -> etate = e -> etat;
+  coupperso->priorite = (p -> dexterite) + (p -> agilite)*1/2;
+  coupperso -> precision = 90 + p->dexterite - e->agilite
+  if ((coupperso ->precision) < 33){
+    coupperso -> precision = 33;
+  }
+  /*Etats*/
+  coupperso->etata->trdef = 0;
+  coupperso->etata->esquive =0;
+  coupperso->etata->multidmg = 0;
+  coupperso->etata->traterre = 0;
+  coupperso->etate->trdef = 0;
+  coupperso->etate->esquive =0;
+  coupperso->etate->multidmg = 0;
+  coupperso->etate->traterre = 0;
 
   return coupperso; /*coup inflige a l'ennemi*/
 }
