@@ -5,13 +5,20 @@
 #define Valeur_max 255;
 
 typedef struct {
+  int trdef;    /*compte le nombre de tour defensif. max 5*/
+  int esquive;  /*mode esquive, augmente par 1.5 l'agilite*/
+  int multidmg; /*multiplicateur de dégats*/
+  int traterre; /*compte le nombre de tour a terre*/
+} etat;
+
+typedef struct {
   int vie; /*PV actuel*/
   int force; /*Valeur offensive*/
   int vitalite; /*Valeur max de pv*/
   int agilite; /*taux supplementaire d'esquive*/
   int dexterite; /*Taux supplementaire de precision*/
   char nom[20]; /*nom du personnage*/
-  int etat; /*etat*/
+  etats etat; /*etat*/
 } personnages;
 
 typedef personnages *personnage;
