@@ -7,7 +7,7 @@
 typedef struct {
   int trdef;    /*compte le nombre de tour defensif. max 5*/
   int esquive;  /*mode esquive, augmente par 1.5 l'agilite*/
-  int multidmg; /*multiplicateur de dégats*/
+  float multidmg; /*multiplicateur de dégats*/
   int traterre; /*compte le nombre de tour a terre*/
 } etat;
 
@@ -77,10 +77,10 @@ coup attaque(personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
   /*Degats*/
   coupperso -> degats = (p -> force)*p->etat->multidmg;
   /*priorite*/
-  coupperso->priorite = (p -> agilite) + (p -> dexterite)*1/4;
-  /*précision de l'action*/
-  coupperso -> precision = 90 + p->dexterite - e->agilite
-  if ((coupperso ->precision) < 33){
+
+  coupperso->priorite = (p -> dexterite) + (p -> agilite)*1/4;
+  coupperso -> precision = 90 + p->dexterite - e->agilite;
+  if ((coupperso ->precision) < 33 ){
     coupperso -> precision = 33;
   }
   /*Etats allie*/
@@ -98,24 +98,41 @@ coup attaque(personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
   return coupperso; /*coup inflige a l'ennemi*/
 }
 
-/*coup defense (personnage p, personnage e){ /*p = Attaquant, e = Attaqué*/
-  /*coup coupperso;
+coup defense (personnage p, personnage e){ /*p = Attaquant, e = Attaqué*/
+  coup coupperso;
+
   /*Degats*/
 
+  coupperso -> etate -> multidmg = coupperso -> etate -> multidmg *0.66;
+
   /*priorite*/
+  coupperso -> priorite = ((p -> agilite ) + (p -> dexterite )*1/4)*1/2;
 
-  /*changement d'état*/
+  /*Etats allie*/
+  coupperso -> etata -> trdef = 2;
+  coupperso -> etata -> esquive = 0;
+  coupperso -> etata -> multidmg = 0,66 ;
+  coupperso -> etata -> traterre = 0;
 
-  /*return coupperso; /*coup inflige a l'ennemi*/
-/*}
+  /* Etats ennemi */
+  coupperso->etate->trdef = 0;
+  coupperso->etate->esquive =0;
+  coupperso->etate->multidmg = 0;
+  coupperso->etate->traterre = 0;
 
-/*coup esquive (personnage p, personnage e){
+
+  return coupperso; /*coup inflige a l'ennemi*/
+}
+
+
+
+coup esquive (personnage p, personnage e){
   /*degats*/
 
   /*priorite*/
 
   /*changement d'etat*/
-/*}*/
+}
 
 int gameover(int go){
   if (go==1){
