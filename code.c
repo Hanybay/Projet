@@ -125,8 +125,6 @@ void defense (coup coupperso,personnage p, personnage e){ /*p = Attaquant, e = A
   coupperso->etate->traterre = 0;
 }
 
-
-
 void esquive (coup coupperso,personnage p, personnage e){
   /*Degats*/
   coupperso ->  degats = 0;
@@ -145,7 +143,6 @@ void esquive (coup coupperso,personnage p, personnage e){
   coupperso -> etate -> esquive = 0;
   coupperso -> etate -> multidmg = 1;
   coupperso -> etate -> traterre = 0;
-
 }
 
 void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
@@ -170,8 +167,6 @@ void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e =
   coupperso -> etate -> multidmg = 1;
   coupperso -> etate -> traterre = 0;
 }
-
-
 
 void labourage(coup coupperso, personnage p, personnage e){
   /* Degats */
@@ -225,6 +220,7 @@ int gameover(int go){
     return 0;
   }
 }
+
 void victoire(){
   /*enlever tous les buffs*/
   /*récuperer des hp a hauteur de 15%*/
@@ -232,6 +228,7 @@ void victoire(){
   printf("victoire!");
   gameover(1);
 }
+
 void calcul_attaque(coup a, personnage aa, personnage bb){
   int precis;
   precis = random(0,100);
@@ -260,7 +257,6 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
     }
   }
 }
-
 
 void findetour(personnage a, personnage b){
   a->multdmg =1;
@@ -337,16 +333,15 @@ void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
   findetour(aa, bb);
 }
 
-
 void explication(){
   printf("Pour jouer à notre fabuleux jeux, vous disposez d'une action parmis 5 chaque tour.\n");
-  
+
   printf("Attaque : vous permets d'attaquer votre ennemi, sans changement d'état.\n");
   printf("Défense : Réduit les dégats pendant 2 tours.\n");
   printf("Esquive : Réduit les dégats à 100%.\n");
   printf("Labourage : vous permets de mettre à terre votre ennemi.\n");
   printf("Coup de pied : Inflige de lourd dégat, précision moyenne.\n");
-  
+
 }
 
 void affichage_stats(personnage p){
@@ -404,14 +399,12 @@ int main(){
         affichage_stats(ennemi);
         break;
     }
-
   }
   decisionia(coupenne, ennemi, principal);
   calcul_du_tour(coupperso, coupenne, principal, ennemi);
   affichage_stats(principal);
   affichage_stats(ennemi);
   while(go = 0){
-
   }
   exit(1);
 }
