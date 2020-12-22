@@ -29,8 +29,8 @@ typedef struct{
   int degats;
   etats etata; /*Etat allié*/
   etats etate; /*Etat ennemi*/
-  int priorite
-  int precision
+  int priorite; /*Priorite*/
+  int precision; /**/
 }coups;
 
 typedef coups *coup;
@@ -77,7 +77,7 @@ coup attaque(personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
   coupperso -> degats = (p -> force) * (p->etat->multidmg);
   /*priorite*/
 
-  coupperso->priorite = (p -> dexterite) + (p -> agilite)*1/2;
+  coupperso->priorite = (p -> agilite) + (p -> dexterite)*1/2;
   coupperso -> precision = 90 + p->dexterite - e->agilite
   if ((coupperso ->precision) < 33){
     coupperso -> precision = 33;
