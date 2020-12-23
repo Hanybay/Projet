@@ -6,31 +6,31 @@
 
 typedef struct {
   int trdef;    /*compte le nombre de tour defensif. max 5*/
-  int esquive;  /*mode esquive, augmente par 1.5 l'agilite*/
-  float multidmg; /*multiplicateur de dégats*/
+  int esquive;  /*mode esquive, augmente pas mal l'esquive*/
+  float multidmg; /*multiplicateur de degats*/
   int traterre; /*compte le nombre de tour a terre*/
 } etat;
 
 typedef etat *etats;
 
 typedef struct {
+  char nom[20]; /*Nom du personnage*/
+  int vitalite; /*Valeur max de pv*/
   int vie; /*PV actuel*/
   int force; /*Valeur offensive*/
-  int vitalite; /*Valeur max de pv*/
-  int agilite; /*taux supplementaire d'esquive*/
+  int agilite; /*Taux supplementaire d'esquive*/
   int dexterite; /*Taux supplementaire de precision*/
-  char nom[20]; /*nom du personnage*/
-  etats etat; /*etat*/
+  etats etat; /*les etats du personnage*/
 } personnages;
 
 typedef personnages *personnage;
 
 typedef struct{
-  int degats;
-  etats etata; /*Etat allié*/
-  etats etate; /*Etat ennemi*/
-  int priorite; /*Priorite*/
-  int precision; /**/
+  int degats; /*Degats que portera le coup*/
+  etats etata; /*Affectation d'etat allie*/
+  etats etate; /*Affectation d'etat ennemi*/
+  int priorite; /*Vitesse de l'attaque*/
+  int precision; /*Precision qu'elle aura*/
 }coups;
 
 typedef coups *coup;
@@ -38,17 +38,17 @@ typedef coups *coup;
 int random(int x, int y){
   int alea;
   srand(time(NULL));
-  alea = rand()%(y-x+1)+x;
+  alea = rand()%(y-x+1)+x; /*On aura besoin de cette fonctions pour beaucoup de choses*/
   return alea;
 }
 
 void init_personnage(personnage p){
-  p->force = 45 + random(-20, 20);
-  p->agilite = 45 + random(-20, 20);
+  p->force = 45 + random(-20, 20);  /*Les stats sont tiré aléatoirement a chaque nouvelle partie*/
+  p->agilite = 45 + random(-20, 20);  /*ennemi comme personnage principal*/
   p->dexterite = 45 + random(-20, 20);
   p->vitalite = 500 + random(-100, 100);
-  p->vie = p->vitalite;
-  p->lesetat->trdef = 0;
+  p->vie = p->vitalite; /*A l'initialisation Pv = Pv max*/
+  p->lesetat->trdef = 0;/*Les personnages n'ont pas d'état au début du combat*/
   p->lesetat->esquive =0;
   p->lesetat->multidmg = 1;
   p->lesetat->traterre = 0;
@@ -56,7 +56,7 @@ void init_personnage(personnage p){
 
 void init_personnage_prin(personnage p){
   printf("Le nom de votre personnage en 19 lettres ou moins");
-  scanf("%s", p->nom);
+  scanf("%s", p->nom); /*Afin de rentrer le prénom, il faudra rentrer*/
 }
 
 void init_personnage_enne(personnage p){
@@ -69,7 +69,7 @@ void init_personnage_enne(personnage p){
 }
 
 void init_coup(coup cp){
-  cp -> degats = 0;
+  cp -> degats = 0; /*Tout est à 0 pour l'initialisation d'un coup a part le multiplicateur*/
   cp->etata->trdef = 0;
   cp->etata->esquive =0;
   cp->etata->multidmg = 1;
@@ -78,27 +78,32 @@ void init_coup(coup cp){
   cp->etate->esquive =0;
   cp->etate->multidmg = 1;
   cp->etate->traterre = 0;
-  cp->priorite =0;
+  cp->priorite = 0;
   cp->precision = 0;
 }
 
 void attaque(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
   /*Degats*/
-  coupperso -> degats = (p -> force)*p->etat->multidmg;
+  coupperso -> degats = (p -> force);
+  /*Les dégats sont proportionnel à l'attaque*/
 
   /*Priorite*/
   coupperso->priorite = (p -> agilite) + (p -> dexterite)*1/4;
+  /*La priorité est proportionnel à l'agilité, et un peu a la dexterite*/
 
-  /*Precision de l'attaque, le minimul sera 10%, il n'y a pas de maximum defini*/
+  /*Precision de l'attaque, le minimum sera 10%, il n'y a pas de maximum defini*/
   coupperso -> precision = 90 + p->dexterite - e->agilite;
+  /*La précision est proportionnel à la dexterite et sera contrecarré par l'agilite ennemi*/
 
   /*Etats allie*/
+  /*Pour une attaque normale, il n'y a aucun buff*/
   coupperso->etata->trdef = 0;
   coupperso->etata->esquive =0;
   coupperso->etata->multidmg = 1;
   coupperso->etata->traterre = 0;
 
   /*Etats ennemis*/
+  /*Pour une attaque normale, il n'y a aucun malus*/
   coupperso->etate->trdef = 0;
   coupperso->etate->esquive =0;
   coupperso->etate->multidmg = 1;
@@ -108,37 +113,45 @@ void attaque(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = 
 void defense (coup coupperso,personnage p, personnage e){ /*p = Attaquant, e = Attaqué*/
   /*Degats*/
   coupperso -> degats = 0;
+  /*Lors d'une defense, le personnage n'attaque pas*/
 
   /*Priorite*/
   coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1.5;
+  /*La priorite est plus élevé qu'une attaque simple*/
 
   /*Etats allie*/
+  /*La défense donne un "buff" de défense sur plusieurs tour*/
   coupperso -> etata -> trdef = 2;
   coupperso -> etata -> esquive = 0;
-  coupperso -> etata -> multidmg = 0.66;
+  coupperso -> etata -> multidmg = 1;
   coupperso -> etata -> traterre = 0;
 
   /* Etats ennemi */
+  /*Cela inflige un debuff de dégâts a l'ennemi*/
   coupperso->etate->trdef = 0;
   coupperso->etate->esquive =0;
-  coupperso->etate->multidmg = 1;
+  coupperso->etate->multidmg = 0.66;
   coupperso->etate->traterre = 0;
 }
 
 void esquive (coup coupperso,personnage p, personnage e){
   /*Degats*/
   coupperso ->  degats = 0;
+  /*Les dégats d'une esquive sont = à 0*/
 
   /*Priorite*/
   coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1,5;
+  /*la priortité est plus elevé qu'une attaque, en espérant être plus rapide que l'ennemi*/
 
   /*Etats allie */
+  /*Inflige un buff d'agilité, correspondant a un malus de précision pour l'ennemi*/
   coupperso -> etata -> trdef = 0;
   coupperso -> etata -> esquive = 1;
   coupperso -> etata -> multidmg = 1;
   coupperso -> etata -> traterre = 0;
 
   /* Etats ennemi */
+  /*il n'y a pas de malus supplementaire pour l'ennemi*/
   coupperso -> etate -> trdef = 0;
   coupperso -> etate -> esquive = 0;
   coupperso -> etate -> multidmg = 1;
@@ -147,21 +160,26 @@ void esquive (coup coupperso,personnage p, personnage e){
 
 void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
   /*Degats*/
-  coupperso -> degats = ((p -> force)/2 + p->dexterite)*1.25*p->etat->multidmg;
+  coupperso -> degats = ((p -> force)/2 + p->dexterite)*1.25;
+  /*Les dégats sont proportionnel a la dexterite et un peu a la force, les dégats peuvent être puissant*/
 
   /*priorite*/
   coupperso -> priorite = (p -> agilite) + (p -> dexterite)*1/4;
+  /*Priorité normale*/
 
   /*Precision*/
-  coupperso -> precision = 40 + p -> dexterite - e -> agilite;
+  coupperso -> precision = 30 + p -> dexterite - e -> agilite;
+  /*La priorité de base est basse, mais si la dexterite est bien monte, ce ne sera pas un probleme*/
 
   /*Etats allie*/
+  /*L'attaque, ne donne aucun bonus*/
   coupperso -> etata -> trdef = 0;
   coupperso -> etata -> esquive =0;
   coupperso -> etata -> multidmg = 1;
   coupperso -> etata -> traterre = 0;
 
   /*Etats ennemis*/
+  /*L'attaque n'inflige aucun Malus*/
   coupperso -> etate -> trdef = 0;
   coupperso -> etate -> esquive =0;
   coupperso -> etate -> multidmg = 1;
@@ -170,13 +188,16 @@ void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e =
 
 void labourage(coup coupperso, personnage p, personnage e){
   /* Degats */
-  coupperso -> degats = (p -> force)*1/2 * p -> etat -> multidmg;
+  coupperso -> degats = (p -> force)*1/4;
+  /*les dégats sont minimes, mais si ça touche, alors l'avantage est certain*/
 
   /* priorite */
   coupperso -> priorite = 0;
+  /*la priotité est nulle, car prendre l'avantage a un prix*/
 
   /* Precision */
-  coupperso -> precision = 60 + p -> dexterite - e -> agilite;
+  coupperso -> precision = 50 + p -> dexterite - e -> agilite;
+  /*La précision est moyenne, et sera aussi en fonction des pvs*/
 
   /*Etats allie*/
   coupperso -> etata -> trdef = 0;
@@ -185,6 +206,7 @@ void labourage(coup coupperso, personnage p, personnage e){
   coupperso -> etata -> traterre = 0;
 
   /*Etats ennemis*/
+  /*inflige un malus, si c'est le cas, les dégats seront multiplié au prochain tours*/
   coupperso -> etate -> trdef = 0;
   coupperso -> etate -> esquive =0;
   coupperso -> etate -> multidmg = 1;
@@ -232,14 +254,18 @@ void victoire(){
 void calcul_attaque(coup a, personnage aa, personnage bb){
   int precis;
   precis = random(0,100);
+  /*La precision est calculé en lancant 1d100. Bien qu'on peut largement dépassé*/
   if (bb->etat-> esquive == 1){
     a->precision -= 0.5* bb->agilite
+    /*le debuff de précision par l'esquive  est ici*/
     if (a->precision <10){
       a->precision = 10;
+    /*La précision ne pas être plus bas que "10%""*/
     }
   }
   if(a -> precision >= precis){
-    bb -> vie -= (a -> degats*aa -> etat -> multidmg);
+    /*Si l'attaque réussi, alors tout est appliqué*/
+    bb -> vie -= (a -> degats*aa->etat->multidmg);
     /*Etat allie*/
     aa->etat->trdef += a->etata->trdef;
     aa->etat->esquive = a->etata->esquive;
@@ -252,24 +278,30 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
     bb -> etat -> traterre += a -> etate -> traterre;
   }
   else{
+    /*Si l'attaque ne réussi pas, et que l'esquive à réussi*/
     if(bb -> etat -> esquive == 1 && a -> degats !=0){
       bb -> etat -> esquive = 2;
+      /*alors on passe l'etat esquive a 2*/
     }
   }
 }
 
 void findetour(personnage a, personnage b){
+  /*Retour à 1 de la mutiplication pour le calculer au prochain tour*/
   a->multdmg =1;
   b->multdmg = 1;
+
   if(a->etat->trdef > 5){
     a->etat->trdef =5;
+    /*On vérifie si les tours de défense ne dépasse pas la limite autorisé*/
   }
-  if(a->etat->trdef > 5){
-      a->etat->trdef =5;
+  if(b->etat->trdef > 5){
+      b->etat->trdef =5;
   }
   if(a->etat->trdef > 0){
     a->etat->trdef -=1;
     b->etat->multidmg = b->etat->multidmg*0.66;
+    /*On applique l'état, baissant */
   }
   if(b->etat->trdef > 0){
     b->etat->trdef -=1;
