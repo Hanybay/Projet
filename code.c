@@ -43,15 +43,15 @@ int random(int x, int y){
 }
 
 void init_personnage(personnage p){
-  p->force = 45 + random(-20, 20);  /*Les stats sont tiré aléatoirement a chaque nouvelle partie*/
-  p->agilite = 45 + random(-20, 20);  /*ennemi comme personnage principal*/
-  p->dexterite = 45 + random(-20, 20);
-  p->vitalite = 500 + random(-100, 100);
+  p->force = 45 + random(-10, 10);  /*Les stats sont tiré aléatoirement a chaque nouvelle partie*/
+  p->agilite = 45 + random(-10, 10);  /*ennemi comme personnage principal*/
+  p->dexterite = 45 + random(-10, 10);
+  p->vitalite = 500 + random(-50, 50);
   p->vie = p->vitalite; /*A l'initialisation Pv = Pv max*/
-  p->lesetat->traterre = 0;
-  p->lesetat->trdef = 0;
-  p->lesetat->esquive = 0;
+  p->lesetat->trdef = 0;/*Les personnages n'ont pas d'état au début du combat*/
+  p->lesetat->esquive =0;
   p->lesetat->multidmg = 1;
+  p->lesetat->traterre = 0;
 }
 
 void init_personnage_prin(personnage p){
@@ -119,6 +119,19 @@ void defense (coup coupperso,personnage p, personnage e){ /*p = Attaquant, e = A
   coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1.5;
   /*La priorite est plus élevé qu'une attaque simple*/
 
+  /*Afin d'appliqué l'état, on vérifie d'abord si l'état est déjà actif*/
+  /* Etats ennemi */
+  /*Cela inflige un debuff de dégâts a l'ennemi*/
+  coupperso->etate->trdef = 0;
+  coupperso->etate->esquive =0;
+  if (p->etat->trdef<1){
+    coupperso->etate->multidmg = 0.66;
+  }
+  else{
+    coupperso->etate->multidmg = 1;
+  }
+  coupperso->etate->traterre = 0;
+
   /*Etats allie*/
   /*La défense donne un "buff" de défense sur plusieurs tour*/
   coupperso -> etata -> trdef = 2;
@@ -126,12 +139,7 @@ void defense (coup coupperso,personnage p, personnage e){ /*p = Attaquant, e = A
   coupperso -> etata -> multidmg = 1;
   coupperso -> etata -> traterre = 0;
 
-  /* Etats ennemi */
-  /*Cela inflige un debuff de dégâts a l'ennemi*/
-  coupperso->etate->trdef = 0;
-  coupperso->etate->esquive =0;
-  coupperso->etate->multidmg = 0.66;
-  coupperso->etate->traterre = 0;
+
 }
 
 void esquive (coup coupperso,personnage p, personnage e){
@@ -140,8 +148,7 @@ void esquive (coup coupperso,personnage p, personnage e){
   /*Les dégats d'une esquive sont = à 0*/
 
   /*Priorite*/
-  coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1.5;
-  coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1.5;
+  coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1,5;
   /*la priortité est plus elevé qu'une attaque, en espérant être plus rapide que l'ennemi*/
 
   /*Etats allie */
@@ -211,17 +218,17 @@ void labourage(coup coupperso, personnage p, personnage e){
   coupperso -> etate -> trdef = 0;
   coupperso -> etate -> esquive =0;
   coupperso -> etate -> multidmg = 1;
-  coupperso -> etate -> traterre = 1;
+  coupperso -> etate -> traterre = 2;
 
 }
 
 void decisionia(coup a, personnage ia, personnage perso){
   int decision;
   decision = random(0, 100);
-  if (decision<20){
+  if (decision<=100){
     attaque(a, ia, perso);
   }
-  if(decision<40 && decision>=20){
+  /*if(decision<40 && decision>=20){
     defense(a, ia, perso);
   }
   if(decision<60 && decision>=40){
@@ -232,32 +239,17 @@ void decisionia(coup a, personnage ia, personnage perso){
   }
   if(decision<=100 && decision>=80){
     labourage(a, ia, perso);
-  }
+  }*/
 }
 
-int gameover(int go){
-  if (go==1){
-    return 1;
-  }
-  else{
-    return 0;
-  }
-}
-
-void victoire(){
-  /*enlever tous les buffs*/
-  /*récuperer des hp a hauteur de 15%*/
-  /*futur mise en place du menu*/
-  printf("victoire!");
-  gameover(1);
-}
 
 void calcul_attaque(coup a, personnage aa, personnage bb){
-  int precis;
+  int precis, dmg;
   precis = random(0,100);
   /*La precision est calculé en lancant 1d100. Bien qu'on peut largement dépassé*/
   if (bb->etat-> esquive == 1){
     a->precision -= 0.5* bb->agilite;
+    printf("%s est dans l'état esquive! \n", bb->nom)
     /*le debuff de précision par l'esquive  est ici*/
     if (a->precision <10){
       a->precision = 10;
@@ -266,23 +258,43 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
   }
   if(a -> precision >= precis){
     /*Si l'attaque réussi, alors tout est appliqué*/
-    bb -> vie -= (a -> degats*aa->etat->multidmg);
+    dmg = a -> degats*aa->etat->multidmg;
+    bb -> vie -= dmg;
+    if(dmg>0){
+      printf("%s a perdu %d pvs!\n", bb->nom, dmg);
+    }
     /*Etat allie*/
     aa->etat->trdef += a->etata->trdef;
+    if(a->etata->trdef>0){
+      printf("%s se défend, les dégats sont réduit pendant 2 tours!", aa->nom);
+    }
     aa->etat->esquive = a->etata->esquive;
+    if(a->etata->esquive>0){
+      printf("%s se met en posture d'esquive!", aa->nom);
+    }
     aa->etat->multidmg = aa->etat->multidmg * a->etata->multidmg;
     aa->etat->traterre += a->etata->traterre;
     /*Etats ennemis*/
     bb -> etat -> trdef += a -> etate -> trdef;
     bb -> etat -> esquive = a -> etate -> esquive;
-    bb -> etat -> multidmg = a -> etate -> multidmg * bb -> etat -> multidmg;
-    bb -> etat -> traterre += a -> etate -> traterre;
+    bb -> etat -> multidmg = aa -> etate -> multidmg * b -> etat -> multidmg;
+
+    if(bb->etat ->traterre !=0){
+      bb -> etat -> traterre += a -> etate -> traterre;
+      if (a->etate ->traterre >0){
+        printf("%s est en position de faiblesse pendant 2 tours! Profitez en!", bb->nom);
+      }
+    }
   }
   else{
     /*Si l'attaque ne réussi pas, et que l'esquive à réussi*/
     if(bb -> etat -> esquive == 1 && a -> degats !=0){
+      printf("%s a esquivé l'attaque de %s ! Il passe en contre-attaque!" bb->nom, aa->nom);
       bb -> etat -> esquive = 2;
       /*alors on passe l'etat esquive a 2*/
+    }
+    else{
+      printf("%s a raté son mouvement! \n", aa->nom);
     }
   }
 }
@@ -292,46 +304,53 @@ void findetour(personnage a, personnage b){
   a->multdmg =1;
   b->multdmg = 1;
 
+  /*On vérifie si les tours de défense ne dépasse pas la limite autorisé*/
   if(a->etat->trdef > 5){
     a->etat->trdef =5;
-    /*On vérifie si les tours de défense ne dépasse pas la limite autorisé*/
   }
   if(b->etat->trdef > 5){
       b->etat->trdef =5;
   }
-  if(a->etat->trdef > 0){
-    a->etat->trdef -=1;
-    b->etat->multidmg = b->etat->multidmg*0.66;
-    /*On applique l'état, baissant */
-  }
-  if(b->etat->trdef > 0){
-    b->etat->trdef -=1;
-    a->etat->multidmg = a->etat->multidmg*0.66;
-  }
 
+  /*On applique l'état, baissant le multiplicateur ennemi*/
+  if(a->etat->trdef > 1){
+    b->etat->multidmg = b->etat->multidmg*0.66;
+  }
+  if(b->etat->trdef > 1){
+    a->etat->mutlidmg = a->etat->multidmg*0.66;
+  }
+  /*Puis on baise de 1 le nombre de tour de défense*/
+  a->etat->trdef -=1
+  b->etat->trdef -=1
+
+  /*On regarde l'état esquive, si il a fonctionner on applique l'effet*/
   if(a->etat->esquive == 2){
-    a->etat->multidmg = a ->etat->multidmg*1.5;
+    a->etat->multidmg = a->etat->multidmg*1.5;
   }
   if(b -> etat -> esquive == 2){
     b -> etat -> multidmg = b ->etat->multidmg*1.5;
   }
+  /*Puis quoiqu'il arrive, on enlève l'état esquive*/
   a -> etat -> esquive = 0;
   b -> etat -> esquive = 0;
 
-  if (a -> etat -> traterre == 1){
+  /*Si on a recu l'état a terre alors on multiplie par 2 les dégats qu'on recevra*/
+  if (a -> etat -> traterre > 0){
     b -> etat -> multidmg = b -> etat -> multidmg*2;
-    a -> etat -> traterre = 0;
+    a -> etat -> traterre -= 1;
   }
-  if (b->etat->traterre == 1){
+  if (b->etat->traterre > 0){
     a->etat->multidmg = a->etat->multidmg*2;
-    b->etat->traterre = 0;
+    b->etat->traterre -= 1;
   }
 }
 
 void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
   int egalite;
+  /*On verifie la priorite de chaque coup, le plus elevé sera celui qui attaquera en premier*/
   if(a->priorite > b->priorite){
     calcul_attaque(a, aa, bb);
+    /*Dans le cas où l'adversaire n'a pas de pv, évidemment on ne calculera pas ses dégâts*/
     if (bb->vie >0){
       calcul_attaque(b, bb, aa);
     }
@@ -342,6 +361,7 @@ void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
       calcul_attaque(a, aa, bb);
     }
   }
+  /*Si les priorité sont égaux, alors on laissera la chance décider*/
   if(a->priorite == b->priorite){
     egalite = random(0,100);
     if(egalite > 50){
@@ -357,12 +377,7 @@ void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
       }
     }
   }
-  if (aa->vie <0){
-    gameover(1);
-  }
-  if (bb->vie <0){
-    victoire();
-  }
+  /*On applique la fin de tour*/
   findetour(aa, bb);
 }
 
@@ -376,7 +391,9 @@ void explication(){
 
 }
 
+
 void affichage_stats(personnage p){
+  /*On affichera les stats, on pourra voir aussi ceux des ennemis*/
   printf("Vie / Vie Max : %d, %d\n", p->vie, p->vitalite);
   printf("Force : %d\n", p->force);
   printf("Agilite : %d\n", p->agilite);
@@ -388,55 +405,82 @@ int main(){
   personnage ennemi;
   coup coupperso;
   coup coupenne;
-  int go;
+  int go, vic, continu;
   int nbcoup;
-  go =0;
+  go = 0;
+  vic = 0;
+  continu = 1;
   init_personnage(principal);
   init_personnage_prin(principal);
   init_personnage(ennemi);
   init_personnage_enne(ennemi);
-  init_coup(coupperso);
-  init_coup(coupenne);
-  printf("quel est votre nom (20 lettres maximum)?  ");
+  printf("quel est votre nom (20 lettres maximum)? ");
   scanf("%s ", principal->nom);
-  while(nbcoup>5){
-    printf("quel sera votre coup?\n");
-    printf("0 = attaque, 1 = defense, 2 = esquive\n");
-    printf("3 = coup de pied, 4 = Mettre a terre, 5 = explications\n");
-    printf("6 = Vos stats, 7 = stats ennemi\n");
-    scanf("%d ", nbcoup);
-    switch(nbcoup){
-      case 0:
-        attaque(coupperso, principal, ennemi);
-        break;
-      case 1:
-        defense(coupperso, principal, ennemi);
-        break;
-      case 2:
-        esquive(coupperso, principal, ennemi);
-        break;
-      case 3:
-        couppied(coupperso, principal, ennemi);
-        break;
-      case 4:
-        labourage(coupperso, principal, ennemi);
-        break;
-      case 5:
-        explication();
-        break;
-      case 6:
-        affichage_stats(principal);
-        break;
-      case 7 :
-        affichage_stats(ennemi);
-        break;
+  while(continu >= 1){
+    init_personnage(ennemi);
+    init_personnage_enne(ennemi);
+    init_coup(coupenne);
+    init_coup(coupperso);
+    while(go==0 && vic == 0){
+      while(nbcoup>5){
+        while (scanf("%d ", nbcoup) != 1 && nb coup <8 && nbcoup>=0){
+          printf("quel sera votre coup?\n");
+          printf("0 = attaque, 1 = defense, 2 = esquive\n");
+          printf("3 = coup de pied, 4 = Mettre a terre, 5 = explications\n");
+          printf("6 = Vos stats, 7 = stats ennemi\n");
+        }
+
+        switch(nbcoup){
+          case 0:
+            attaque(coupperso, principal, ennemi);
+            break;
+          case 1:
+            defense(coupperso, principal, ennemi);
+            break;
+          case 2:
+            esquive(coupperso, principal, ennemi);
+            break;
+          case 3:
+            couppied(coupperso, principal, ennemi);
+            break;
+          case 4:
+            labourage(coupperso, principal, ennemi);
+            break;
+          case 5:
+            explications();
+            break;
+          case 6:
+            affichage_stats(principal);
+            break;
+          case 7 :
+            affichage_stats(ennemi);
+            break;
+        }
+      }
+      decisionia(coupenne, ennemi, principal);
+      calcul_du_tour(coupperso, coupenne, principal, ennemi);
+      printf("Affichage des stats du personnage principal\n");
+      affichage_stats(principal);
+      printf("Affichage des stats de l'ennemi\n")
+      affichage_stats(ennemi);
+      if (principal->vie <= 0){
+        go = 1;
+      }
+      else{
+        if (ennemi->vie <= 0){
+          vic = 1;
+        }
+      }
     }
-  }
-  decisionia(coupenne, ennemi, principal);
-  calcul_du_tour(coupperso, coupenne, principal, ennemi);
-  affichage_stats(principal);
-  affichage_stats(ennemi);
-  while(go == 0){
+    vic =0;
+    go = 0;
+    principal -> vie = principal->vie + 15/100*principal->vitalite;
+    if (principal->vie > principal->vitalite){
+      principal->vie = principal->vitalite;
+    }
+    while (scanf("%d ", continu) != 1){
+      printf("voulez vous continuez? \n");
+    }
   }
   exit(1);
 }
