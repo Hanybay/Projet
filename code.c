@@ -301,8 +301,8 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
 
 void findetour(personnage a, personnage b){
   /*Retour à 1 de la mutiplication pour le calculer au prochain tour*/
-  a->multdmg =1;
-  b->multdmg = 1;
+  a-> etat -> multdmg =1.0;
+  b-> etat -> multdmg = 1.0;
 
   /*On vérifie si les tours de défense ne dépasse pas la limite autorisé*/
   if(a->etat->trdef > 5){
