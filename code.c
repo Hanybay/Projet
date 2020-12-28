@@ -249,7 +249,7 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
   /*La precision est calculé en lancant 1d100. Bien qu'on peut largement dépassé*/
   if (bb->etat-> esquive == 1){
     a->precision -= 0.5* bb->agilite;
-    printf("%s est dans l'état esquive! \n", bb->nom)
+    printf("%s est dans l'état esquive! \n", bb->nom);
     /*le debuff de précision par l'esquive  est ici*/
     if (a->precision <10){
       a->precision = 10;
