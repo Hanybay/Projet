@@ -49,6 +49,9 @@ void init_personnage(personnage p){
   p->vitalite = 500 + random(-100, 100);
   p->vie = p->vitalite; /*A l'initialisation Pv = Pv max*/
   p->lesetat->traterre = 0;
+  p->lesetat->trdef = 0;
+  p->lesetat->esquive = 0;
+  p->lesetat->multidmg = 1;
 }
 
 void init_personnage_prin(personnage p){
