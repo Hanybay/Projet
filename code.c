@@ -320,8 +320,8 @@ void findetour(personnage a, personnage b){
     a->etat->mutlidmg = a->etat->multidmg*0.66;
   }
   /*Puis on baise de 1 le nombre de tour de défense*/
-  a->etat->trdef -=1
-  b->etat->trdef -=1
+  a->etat->trdef -=1;
+  b->etat->trdef -=1;
 
   /*On regarde l'état esquive, si il a fonctionner on applique l'effet*/
   if(a->etat->esquive == 2){
