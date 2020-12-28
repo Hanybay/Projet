@@ -48,9 +48,6 @@ void init_personnage(personnage p){
   p->dexterite = 45 + random(-20, 20);
   p->vitalite = 500 + random(-100, 100);
   p->vie = p->vitalite; /*A l'initialisation Pv = Pv max*/
-  p->lesetat->trdef = 0;/*Les personnages n'ont pas d'état au début du combat*/
-  p->lesetat->esquive =0;
-  p->lesetat->multidmg = 1;
   p->lesetat->traterre = 0;
 }
 
@@ -141,6 +138,7 @@ void esquive (coup coupperso,personnage p, personnage e){
 
   /*Priorite*/
   coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1,5;
+  coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1.5;
   /*la priortité est plus elevé qu'une attaque, en espérant être plus rapide que l'ennemi*/
 
   /*Etats allie */
@@ -256,7 +254,7 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
   precis = random(0,100);
   /*La precision est calculé en lancant 1d100. Bien qu'on peut largement dépassé*/
   if (bb->etat-> esquive == 1){
-    a->precision -= 0.5* bb->agilite
+    a->precision -= 0.5* bb->agilite;
     /*le debuff de précision par l'esquive  est ici*/
     if (a->precision <10){
       a->precision = 10;
@@ -274,7 +272,7 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
     /*Etats ennemis*/
     bb -> etat -> trdef += a -> etate -> trdef;
     bb -> etat -> esquive = a -> etate -> esquive;
-    bb -> etat -> multidmg = aa -> etate -> multidmg * b -> etat -> multidmg;
+    bb -> etat -> multidmg = aa -> etate -> multidmg * bb -> etat -> multidmg;
     bb -> etat -> traterre += a -> etate -> traterre;
   }
   else{
@@ -305,7 +303,7 @@ void findetour(personnage a, personnage b){
   }
   if(b->etat->trdef > 0){
     b->etat->trdef -=1;
-    a->etat->mutlidmg = a->etat->multidmg*0.66;
+    a->etat->multidmg = a->etat->multidmg*0.66;
   }
 
   if(a->etat->esquive == 2){
@@ -367,12 +365,6 @@ void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
 
 void explication(){
   printf("Pour jouer à notre fabuleux jeux, vous disposez d'une action parmis 5 chaque tour.\n");
-
-  printf("Attaque : vous permets d'attaquer votre ennemi, sans changement d'état.\n");
-  printf("Défense : Réduit les dégats pendant 2 tours.\n");
-  printf("Esquive : Réduit les dégats à 100%.\n");
-  printf("Labourage : vous permets de mettre à terre votre ennemi.\n");
-  printf("Coup de pied : Inflige de lourd dégat, précision moyenne.\n");
   printf("Attaque : attaque normal, les dégats sont sur la force brut,précision elevée, pas de changement d'état.\n");
   printf("Défense : défense cotre un coup, vous suibissez pour les 2 prochains tours 66% des dégats normaux, stackable sur 5 tours.\n");
   printf("Esquive : esquive d'un coup. Reduction des dégats à 100%.\n");
@@ -408,7 +400,7 @@ int main(){
     printf("quel sera votre coup?\n");
     printf("0 = attaque, 1 = defense, 2 = esquive\n");
     printf("3 = coup de pied, 4 = Mettre a terre, 5 = explications\n");
-    printf("6 = Vos stats, 7 = stats ennemi\n")
+    printf("6 = Vos stats, 7 = stats ennemi\n");
     scanf("%d ", nbcoup);
     switch(nbcoup){
       case 0:
@@ -427,7 +419,7 @@ int main(){
         labourage(coupperso, principal, ennemi);
         break;
       case 5:
-        explications();
+        explication();
         break;
       case 6:
         affichage_stats(principal);
