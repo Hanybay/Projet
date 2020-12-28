@@ -423,7 +423,7 @@ int main(){
     init_coup(coupperso);
     while(go==0 && vic == 0){
       while(nbcoup>5){
-        while (scanf("%d ", nbcoup) != 1 && nb coup <8 && nbcoup>=0){
+        while (scanf("%d ", nbcoup) != 1 && nbcoup <8 && nbcoup>=0){
           printf("quel sera votre coup?\n");
           printf("0 = attaque, 1 = defense, 2 = esquive\n");
           printf("3 = coup de pied, 4 = Mettre a terre, 5 = explications\n");
@@ -461,7 +461,7 @@ int main(){
       calcul_du_tour(coupperso, coupenne, principal, ennemi);
       printf("Affichage des stats du personnage principal\n");
       affichage_stats(principal);
-      printf("Affichage des stats de l'ennemi\n")
+      printf("Affichage des stats de l'ennemi\n");
       affichage_stats(ennemi);
       if (principal->vie <= 0){
         go = 1;
