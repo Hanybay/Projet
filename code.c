@@ -436,7 +436,7 @@ int main(){
   calcul_du_tour(coupperso, coupenne, principal, ennemi);
   affichage_stats(principal);
   affichage_stats(ennemi);
-  while(go = 0){
+  while(go == 0){
   }
   exit(1);
 }
