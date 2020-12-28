@@ -275,7 +275,7 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
     /*Etats ennemis*/
     bb -> etat -> trdef += a -> etate -> trdef;
     bb -> etat -> esquive = a -> etate -> esquive;
-    bb -> etat -> multidmg = aa -> etate -> multidmg * bb -> etat -> multidmg;
+    bb -> etat -> multidmg = a -> etate -> multidmg * bb -> etat -> multidmg;
     bb -> etat -> traterre += a -> etate -> traterre;
   }
   else{
