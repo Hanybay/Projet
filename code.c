@@ -140,7 +140,7 @@ void esquive (coup coupperso,personnage p, personnage e){
   /*Les dégats d'une esquive sont = à 0*/
 
   /*Priorite*/
-  coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1,5;
+  coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1.5;
   coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1.5;
   /*la priortité est plus elevé qu'une attaque, en espérant être plus rapide que l'ennemi*/
 
