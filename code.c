@@ -165,10 +165,10 @@ void defense (coup coupperso,personnage p, personnage e){ /*p = Attaquant, e = A
 
   /*Etats allie*/
   /*La défense donne un "buff" de défense sur plusieurs tour*/
-  coupperso -> etata -> trdef = 2;
-  coupperso -> etata -> esquive = 0;
-  coupperso -> etata -> multidmg = 1;
-  coupperso -> etata -> traterre = 0;
+  coupperso -> pe_trdef = 2;
+  coupperso -> pe_esquive = 0;
+  coupperso -> pe_multidmg = 1;
+  coupperso -> pe_traterre = 0;
 
 
 }
@@ -188,17 +188,17 @@ void esquive (coup coupperso,personnage p, personnage e){
 
   /*Etats allie */
   /*Inflige un buff d'agilité, correspondant a un malus de précision pour l'ennemi*/
-  coupperso -> etata -> trdef = 0;
-  coupperso -> etata -> esquive = 1;
-  coupperso -> etata -> multidmg = 1;
-  coupperso -> etata -> traterre = 0;
+  coupperso -> pe_trdef = 0;
+  coupperso -> pe_esquive = 1;
+  coupperso -> pe_multidmg = 1;
+  coupperso -> pe_traterre = 0;
 
   /* Etats ennemi */
   /*il n'y a pas de malus supplementaire pour l'ennemi*/
-  coupperso -> etate -> trdef = 0;
-  coupperso -> etate -> esquive = 0;
-  coupperso -> etate -> multidmg = 1;
-  coupperso -> etate -> traterre = 0;
+  coupperso -> en_trdef = 0;
+  coupperso -> en_esquive = 0;
+  coupperso -> en_multidmg = 1;
+  coupperso -> en_traterre = 0;
 }
 
 void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
@@ -216,17 +216,17 @@ void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e =
 
   /*Etats allie*/
   /*L'attaque, ne donne aucun bonus*/
-  coupperso -> etata -> trdef = 0;
-  coupperso -> etata -> esquive =0;
-  coupperso -> etata -> multidmg = 1;
-  coupperso -> etata -> traterre = 0;
+  coupperso -> pe_trdef = 0;
+  coupperso -> pe_esquive =0;
+  coupperso -> pe_multidmg = 1;
+  coupperso -> pe_traterre = 0;
 
   /*Etats ennemis*/
   /*L'attaque n'inflige aucun Malus*/
-  coupperso -> etate -> trdef = 0;
-  coupperso -> etate -> esquive =0;
-  coupperso -> etate -> multidmg = 1;
-  coupperso -> etate -> traterre = 0;
+  coupperso -> en_trdef = 0;
+  coupperso -> en_esquive =0;
+  coupperso -> en_multidmg = 1;
+  coupperso -> en_traterre = 0;
 }
 
 void labourage(coup coupperso, personnage p, personnage e){
@@ -243,17 +243,17 @@ void labourage(coup coupperso, personnage p, personnage e){
   /*La précision est moyenne, et sera aussi en fonction des pvs*/
 
   /*Etats allie*/
-  coupperso -> etata -> trdef = 0;
-  coupperso -> etata -> esquive = 0;
-  coupperso -> etata -> multidmg = 1;
-  coupperso -> etata -> traterre = 0;
+  coupperso -> pe_trdef = 0;
+  coupperso -> pe_esquive = 0;
+  coupperso -> pe_multidmg = 1;
+  coupperso -> pe_traterre = 0;
 
   /*Etats ennemis*/
   /*inflige un malus, si c'est le cas, les dégats seront multiplié au prochain tours*/
-  coupperso -> etate -> trdef = 0;
-  coupperso -> etate -> esquive =0;
-  coupperso -> etate -> multidmg = 1;
-  coupperso -> etate -> traterre = 2;
+  coupperso -> en_trdef = 0;
+  coupperso -> en_esquive =0;
+  coupperso -> en_multidmg = 1;
+  coupperso -> en_traterre = 2;
 
 }
 
@@ -299,24 +299,24 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
       printf("%s a perdu %d pvs!\n", bb->nom, dmg);
     }
     /*Etat allie*/
-    aa->trdef += a->etata->trdef;
-    if(a->etata->trdef>0){
+    aa->trdef += a->pe_trdef;
+    if(a->pe_trdef>0){
       printf("%s se défend, les dégats sont réduit pendant 2 tours!", aa->nom);
     }
-    aa->esquive = a->etata->esquive;
-    if(a->etata->esquive>0){
+    aa->esquive = a->pe_esquive;
+    if(a->pe_esquive>0){
       printf("%s se met en posture d'esquive!", aa->nom);
     }
-    aa->multidmg = aa->multidmg * a->etata->multidmg;
-    aa->traterre += a->etata->traterre;
+    aa->multidmg = aa->multidmg * a->en_multidmg;
+    aa->traterre += a->en_traterre;
     /*Etats ennemis*/
-    bb -> trdef += a -> etate -> trdef;
-    bb -> esquive += a -> etate -> esquive;
-    bb -> multidmg = bb -> multidmg * a -> etate -> multidmg;
+    bb -> trdef += a -> en_trdef;
+    bb -> esquive += a -> en_esquive;
+    bb -> multidmg = bb -> multidmg * a ->en_multidmg;
 
     if(bb->traterre !=0){
-      bb -> traterre += a -> etate -> traterre;
-      if (a->etate ->traterre >0){
+      bb -> traterre += a -> en_traterre;
+      if (a->en_traterre >0){
         printf("%s est en position de faiblesse pendant 2 tours! Profitez en!", bb->nom);
       }
     }
