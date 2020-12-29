@@ -494,7 +494,7 @@ int main(){
     init_personnage(p_enne);
     init_personnage_enne(p_enne);
     coupperso = init_coup();
-    coupeenne = init_coup();
+    coupenne = init_coup();
     while(go==0 && vic == 0){
       while(nbcoup>5){
         while (scanf("%d ",&nbcoup) != 1 && nbcoup <8 && nbcoup>=0){
@@ -534,7 +534,7 @@ int main(){
       printf("coup choisis par le joueur : \n");
       affichage_coup(coupp);
       decisionia(coupe, p_enne, p_prin);
-      printf("coup choisis par l'ordinateur : \n")
+      printf("coup choisis par l'ordinateur : \n");
       affichage_coup(coupe);
       printf("calcul du tour\n\n\n");
 
