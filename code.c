@@ -95,110 +95,112 @@ void init_personnage_enne(personnage p){
   p->nom[5] = 'l';
 }
 
-void init_coup(coup cp){
-  cp->degats = 0; /*Tout est à 0 pour l'initialisation d'un coup a part le multiplicateur*/
-  cp->etata->trdef = 0;
-  cp->etata->esquive =0;
-  cp->etata->multidmg = 1;
-  cp->etata->traterre = 0;
-  cp->etate->trdef = 0;
-  cp->etate->esquive =0;
-  cp->etate->multidmg = 1;
-  cp->etate->traterre = 0;
-  cp->priorite = 0;
-  cp->precision = 0;
+coups init_coup(){
+  coups cp;
+  cp.degats = 0; /*Tout est à 0 pour l'initialisation d'un coup a part le multiplicateur*/
+  cp.pe_trdef = 0;
+  cp.pe_esquive =0;
+  cp.pe_multidmg = 1;
+  cp.pe_traterre = 0;
+  cp.en_trdef = 0;
+  cp.en_esquive =0;
+  cp.en_multidmg = 1;
+  cp.en_traterre = 0;
+  cp.priorite = 0;
+  cp.precision = 0;
+  return cp;
 }
 
-void attaque(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
+void attaque(coups coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
   /*Degats*/
-  coupperso -> degats = (p -> force);
+  coupperso.degats = (p -> force);
   /*Les dégats sont proportionnel à l'attaque*/
 
   /*Priorite*/
-  coupperso->priorite = (p -> agilite) + (p -> dexterite)*1/4;
+  coupperso.priorite = (p -> agilite) + (p -> dexterite)*1/4;
   /*La priorité est proportionnel à l'agilité, et un peu a la dexterite*/
 
   /*Precision de l'attaque, le minimum sera 10%, il n'y a pas de maximum defini*/
-  coupperso -> precision = 90 + p->dexterite - e->agilite;
+  coupperso.precision = 90 + p->dexterite - e->agilite;
   /*La précision est proportionnel à la dexterite et sera contrecarré par l'agilite ennemi*/
 
   /*Etats allie*/
   /*Pour une attaque normale, il n'y a aucun buff*/
-  coupperso->etata->trdef = 0;
-  coupperso->etata->esquive =0;
-  coupperso->etata->multidmg = 1;
-  coupperso->etata->traterre = 0;
+  coupperso.pe_trdef = 0;
+  coupperso.pe_esquive =0;
+  coupperso.pe_multidmg = 1;
+  coupperso.pe_traterre = 0;
 
   /*Etats ennemis*/
   /*Pour une attaque normale, il n'y a aucun malus*/
-  coupperso->etate->trdef = 0;
-  coupperso->etate->esquive =0;
-  coupperso->etate->multidmg = 1;
-  coupperso->etate->traterre = 0;
+  coupperso.en_trdef = 0;
+  coupperso.en_esquive =0;
+  coupperso.en_multidmg = 1;
+  coupperso.en_traterre = 0;
 }
 
-void defense (coup coupperso,personnage p, personnage e){ /*p = Attaquant, e = Attaqué*/
+void defense (coups coupperso,personnage p, personnage e){ /*p = Attaquant, e = Attaqué*/
   /*Degats*/
-  coupperso -> degats = 0;
+  coupperso.degats = 0;
   /*Lors d'une defense, le personnage n'attaque pas*/
 
   /*Priorite*/
-  coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1.5;
+  coupperso.priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1.5;
   /*La priorite est plus élevé qu'une attaque simple*/
 
   /*Precision de l'attaque, le minimum sera 10%, il n'y a pas de maximum defini*/
-  coupperso -> precision = 100 + p->dexterite - e->agilite;
+  coupperso.precision = 100 + p->dexterite - e->agilite;
   /*La précision est proportionnel à la dexterite et sera contrecarré par l'agilite ennemi*/
 
   /*Afin d'appliqué l'état, on vérifie d'abord si l'état est déjà actif*/
   /* Etats ennemi */
   /*Cela inflige un debuff de dégâts a l'ennemi*/
-  coupperso->etate->trdef = 0;
-  coupperso->etate->esquive =0;
+  coupperso.en_trdef = 0;
+  coupperso.en_esquive =0;
   if (p->trdef<1){
-    coupperso->etate->multidmg = 0.66;
+    coupperso.en_multidmg = 0.66;
   }
   else{
-    coupperso->etate->multidmg = 1;
+    coupperso.en_multidmg = 1;
   }
-  coupperso->etate->traterre = 0;
+  coupperso.en_traterre = 0;
 
   /*Etats allie*/
   /*La défense donne un "buff" de défense sur plusieurs tour*/
-  coupperso -> etata -> trdef = 2;
-  coupperso -> etata -> esquive = 0;
-  coupperso -> etata -> multidmg = 1;
-  coupperso -> etata -> traterre = 0;
+  coupperso.pe_trdef = 2;
+  coupperso.pe_esquive = 0;
+  coupperso.pe_multidmg = 1;
+  coupperso.pe_traterre = 0;
 
 
 }
 
-void esquive (coup coupperso,personnage p, personnage e){
+void esquive (coups coupperso,personnage p, personnage e){
   /*Degats*/
-  coupperso ->  degats = 0;
+  coupperso.degats = 0;
   /*Les dégats d'une esquive sont = à 0*/
 
   /*Priorite*/
-  coupperso -> priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1.5;
+  coupperso.priorite = ((p -> agilite) + (p -> dexterite)*1/4)*1.5;
   /*la priortité est plus elevé qu'une attaque, en espérant être plus rapide que l'ennemi*/
 
   /*Precision de l'attaque, le minimum sera 10%, il n'y a pas de maximum defini*/
-  coupperso -> precision = 50 + p->dexterite - e->agilite;
+  coupperso.precision = 50 + p->dexterite - e->agilite;
   /*La précision est proportionnel à la dexterite et sera contrecarré par l'agilite ennemi*/
 
   /*Etats allie */
   /*Inflige un buff d'agilité, correspondant a un malus de précision pour l'ennemi*/
-  coupperso -> etata -> trdef = 0;
-  coupperso -> etata -> esquive = 1;
-  coupperso -> etata -> multidmg = 1;
-  coupperso -> etata -> traterre = 0;
+  coupperso.pe_trdef = 0;
+  coupperso.pe_esquive = 1;
+  coupperso.pe_multidmg = 1;
+  coupperso.pe_traterre = 0;
 
   /* Etats ennemi */
   /*il n'y a pas de malus supplementaire pour l'ennemi*/
-  coupperso -> etate -> trdef = 0;
-  coupperso -> etate -> esquive = 0;
-  coupperso -> etate -> multidmg = 1;
-  coupperso -> etate -> traterre = 0;
+  coupperso.en_trdef = 0;
+  coupperso.en_esquive = 0;
+  coupperso.en_multidmg = 1;
+  coupperso.en_traterre = 0;
 }
 
 void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e = Attaqué*/
