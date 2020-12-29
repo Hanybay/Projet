@@ -249,7 +249,7 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
   /*La precision est calculé en lancant 1d100. Bien qu'on peut largement dépassé*/
   if (bb->etat-> esquive == 1){
     a->precision -= 0.5* bb->agilite;
-    printf("%s est dans l'état esquive! \n", bb->nom)
+    printf("%s est dans l'état esquive! \n", bb->nom);
     /*le debuff de précision par l'esquive  est ici*/
     if (a->precision <10){
       a->precision = 10;
@@ -301,8 +301,8 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
 
 void findetour(personnage a, personnage b){
   /*Retour à 1 de la mutiplication pour le calculer au prochain tour*/
-  a->multdmg =1;
-  b->multdmg = 1;
+  a-> etat -> multdmg =1.0;
+  b-> etat -> multdmg = 1.0;
 
   /*On vérifie si les tours de défense ne dépasse pas la limite autorisé*/
   if(a->etat->trdef > 5){
@@ -320,8 +320,8 @@ void findetour(personnage a, personnage b){
     a->etat->mutlidmg = a->etat->multidmg*0.66;
   }
   /*Puis on baise de 1 le nombre de tour de défense*/
-  a->etat->trdef -=1
-  b->etat->trdef -=1
+  a->etat->trdef -=1;
+  b->etat->trdef -=1;
 
   /*On regarde l'état esquive, si il a fonctionner on applique l'effet*/
   if(a->etat->esquive == 2){
@@ -423,7 +423,7 @@ int main(){
     init_coup(coupperso);
     while(go==0 && vic == 0){
       while(nbcoup>5){
-        while (scanf("%d ", nbcoup) != 1 && nb coup <8 && nbcoup>=0){
+        while (scanf("%d ", nbcoup) != 1 && nbcoup <8 && nbcoup>=0){
           printf("quel sera votre coup?\n");
           printf("0 = attaque, 1 = defense, 2 = esquive\n");
           printf("3 = coup de pied, 4 = Mettre a terre, 5 = explications\n");
@@ -461,7 +461,7 @@ int main(){
       calcul_du_tour(coupperso, coupenne, principal, ennemi);
       printf("Affichage des stats du personnage principal\n");
       affichage_stats(principal);
-      printf("Affichage des stats de l'ennemi\n")
+      printf("Affichage des stats de l'ennemi\n");
       affichage_stats(ennemi);
       if (principal->vie <= 0){
         go = 1;
