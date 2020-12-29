@@ -7,7 +7,7 @@
 typedef struct {
   int trdef;    /*compte le nombre de tour defensif. max 5*/
   int esquive;  /*mode esquive, augmente pas mal l'esquive*/
-  float multidmg; /*multiplicateur de degats*/
+  int multidmg; /*multiplicateur de degats*/
   int traterre; /*compte le nombre de tour a terre*/
 } etat;
 
@@ -20,24 +20,33 @@ typedef struct {
   int force; /*Valeur offensive*/
   int agilite; /*Taux supplementaire d'esquive*/
   int dexterite; /*Taux supplementaire de precision*/
-  etats etat; /*les etats du personnage*/
+  int trdef; /*les etats du personnage*/
+  int esquive;
+  int multidmg;
+  int traterre;
 } personnages;
 
 typedef personnages *personnage;
 
 typedef struct{
   int degats; /*Degats que portera le coup*/
-  etats etata; /*Affectation d'etat allie*/
-  etats etate; /*Affectation d'etat ennemi*/
   int priorite; /*Vitesse de l'attaque*/
   int precision; /*Precision qu'elle aura*/
+  int pe_trdef; /*les etats du personnage*/
+  int pe_esquive;
+  int pe_multidmg;
+  int pe_traterre; /*Affectation d'etat allie*/
+  int en_trdef; /*les etats du personnage*/
+  int en_esquive;
+  int en_multidmg;
+  int en_traterre; /*Affectation d'etat ennemi*/
 }coups;
 
 typedef coups *coup;
 
 int aleat(int x, int y){
   int alea;
-  srand(time(NULL));
+
   alea = rand()%(y-x+1)+x; /*On aura besoin de cette fonctions pour beaucoup de choses*/
   return alea;
 }
@@ -55,22 +64,25 @@ personnages init_personnage(){
   personnages p;
   int i;
   for (i=0; i<19; i++){
-    p.nom[i]=0;
+    p.nom[i]='\0';
   }
+  srand(time(NULL));
   p.force = 45 + aleat(-10, 10);  /*Les stats sont tiré aléatoirement a chaque nouvelle partie*/
   p.agilite = 45 + aleat(-10, 10);  /*ennemi comme personnage principal*/
   p.dexterite = 45 + aleat(-10, 10);
   p.vitalite = 500 + aleat(-50, 50);
   p.vie = p.vitalite; /*A l'initialisation Pv = Pv max*/
-  p.etat->trdef = 1; /*Les personnages n'ont pas d'état au début du combat*/
-  p.etat->esquive =1;
-  p.etat->multidmg = 1.0;
-  p.etat->traterre = 1;
+  p.trdef = 0;
+  p.esquive = 0;
+  p.traterre=0;
+  p.multidmg=0;
   return p;
 }
 
+
+
 void init_personnage_prin(personnage p){
-  printf("Le nom de votre personnage en 19 lettres ou moins");
+  printf("Le nom de votre personnage en 19 lettres ou moins?  ");
   scanf("%s", p->nom); /*Afin de rentrer le prénom, il faudra rentrer*/
 }
 
@@ -143,7 +155,7 @@ void defense (coup coupperso,personnage p, personnage e){ /*p = Attaquant, e = A
   /*Cela inflige un debuff de dégâts a l'ennemi*/
   coupperso->etate->trdef = 0;
   coupperso->etate->esquive =0;
-  if (p->etat->trdef<1){
+  if (p->trdef<1){
     coupperso->etate->multidmg = 0.66;
   }
   else{
@@ -270,7 +282,7 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
   int precis, dmg;
   precis = aleat(0,100);
   /*La precision est calculé en lancant 1d100. Bien qu'on peut largement dépassé*/
-  if (bb->etat-> esquive == 1){
+  if (bb->esquive == 1){
     a->precision -= 0.5* bb->agilite;
     printf("%s est dans l'état esquive! \n", bb->nom);
     /*le debuff de précision par l'esquive  est ici*/
@@ -281,29 +293,29 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
   }
   if(a -> precision >= precis){
     /*Si l'attaque réussi, alors tout est appliqué*/
-    dmg = a -> degats*aa->etat->multidmg;
+    dmg = a -> degats*aa->multidmg;
     bb -> vie -= dmg;
     if(dmg>0){
       printf("%s a perdu %d pvs!\n", bb->nom, dmg);
     }
     /*Etat allie*/
-    aa->etat->trdef += a->etata->trdef;
+    aa->trdef += a->etata->trdef;
     if(a->etata->trdef>0){
       printf("%s se défend, les dégats sont réduit pendant 2 tours!", aa->nom);
     }
-    aa->etat->esquive = a->etata->esquive;
+    aa->esquive = a->etata->esquive;
     if(a->etata->esquive>0){
       printf("%s se met en posture d'esquive!", aa->nom);
     }
-    aa->etat->multidmg = aa->etat->multidmg * a->etata->multidmg;
-    aa->etat->traterre += a->etata->traterre;
+    aa->multidmg = aa->multidmg * a->etata->multidmg;
+    aa->traterre += a->etata->traterre;
     /*Etats ennemis*/
-    bb -> etat -> trdef += a -> etate -> trdef;
-    bb -> etat -> esquive += a -> etate -> esquive;
-    bb -> etat -> multidmg = bb -> etat -> multidmg * a -> etate -> multidmg;
+    bb -> trdef += a -> etate -> trdef;
+    bb -> esquive += a -> etate -> esquive;
+    bb -> multidmg = bb -> multidmg * a -> etate -> multidmg;
 
-    if(bb->etat ->traterre !=0){
-      bb -> etat -> traterre += a -> etate -> traterre;
+    if(bb->traterre !=0){
+      bb -> traterre += a -> etate -> traterre;
       if (a->etate ->traterre >0){
         printf("%s est en position de faiblesse pendant 2 tours! Profitez en!", bb->nom);
       }
@@ -311,9 +323,9 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
   }
   else{
     /*Si l'attaque ne réussi pas, et que l'esquive à réussi*/
-    if(bb -> etat -> esquive == 1 && a -> degats !=0){
+    if(bb -> esquive == 1 && a -> degats !=0){
       printf("%s a esquivé l'attaque de %s ! Il passe en contre-attaque!", bb->nom, aa->nom);
-      bb -> etat -> esquive = 2;
+      bb -> esquive = 2;
       /*alors on passe l'etat esquive a 2*/
     }
     else{
@@ -324,47 +336,47 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
 
 void findetour(personnage a, personnage b){
   /*Retour à 1 de la mutiplication pour le calculer au prochain tour*/
-  a->etat->multidmg =1.0;
-  b->etat->multidmg = 1.0;
+  a->multidmg =1.0;
+  b->multidmg = 1.0;
 
   /*On vérifie si les tours de défense ne dépasse pas la limite autorisé*/
-  if(a->etat->trdef > 5){
-    a->etat->trdef =5;
+  if(a->trdef > 5){
+    a->trdef =5;
   }
-  if(b->etat->trdef > 5){
-      b->etat->trdef =5;
+  if(b->trdef > 5){
+      b->trdef =5;
   }
 
   /*On applique l'état, baissant le multiplicateur ennemi*/
-  if(a->etat->trdef > 1){
-    b->etat->multidmg = b->etat->multidmg*0.66;
+  if(a->trdef > 1){
+    b->multidmg = b->multidmg*0.66;
   }
-  if(b->etat->trdef > 1){
-    a->etat->multidmg = a->etat->multidmg*0.66;
+  if(b->trdef > 1){
+    a->multidmg = a->multidmg*0.66;
   }
   /*Puis on baise de 1 le nombre de tour de défense*/
-  a->etat->trdef -=1;
-  b->etat->trdef -=1;
+  a->trdef -=1;
+  b->trdef -=1;
 
   /*On regarde l'état esquive, si il a fonctionner on applique l'effet*/
-  if(a->etat->esquive == 2){
-    a->etat->multidmg = a->etat->multidmg*1.5;
+  if(a->esquive == 2){
+    a->multidmg = a->multidmg*1.5;
   }
-  if(b -> etat -> esquive == 2){
-    b -> etat -> multidmg = b ->etat->multidmg*1.5;
+  if(b -> esquive == 2){
+    b -> multidmg = b ->multidmg*1.5;
   }
   /*Puis quoiqu'il arrive, on enlève l'état esquive*/
-  a -> etat -> esquive = 0;
-  b -> etat -> esquive = 0;
+  a -> esquive = 0;
+  b -> esquive = 0;
 
   /*Si on a recu l'état a terre alors on multiplie par 2 les dégats qu'on recevra*/
-  if (a -> etat -> traterre > 0){
-    b -> etat -> multidmg = b -> etat -> multidmg*2;
-    a -> etat -> traterre -= 1;
+  if (a -> traterre > 0){
+    b -> multidmg = b -> multidmg*2;
+    a -> traterre -= 1;
   }
-  if (b->etat->traterre > 0){
-    a->etat->multidmg = a->etat->multidmg*2;
-    b->etat->traterre -= 1;
+  if (b->traterre > 0){
+    a->multidmg = a->multidmg*2;
+    b->traterre -= 1;
   }
 }
 
@@ -417,6 +429,7 @@ void explication(){
 
 void affichage_stats(personnage p){
   /*On affichera les stats, on pourra voir aussi ceux des ennemis*/
+  printf("%s est le nom du personnage", p->nom);
   printf("Vie / Vie Max : %d, %d\n", p->vie, p->vitalite);
   printf("Force : %d\n", p->force);
   printf("Agilite : %d\n", p->agilite);
@@ -447,8 +460,11 @@ int main(){
   init_personnage_prin(p_prin);
   ennemi = init_personnage();
   init_personnage_enne(p_enne);
-  printf("quel est votre nom (20 lettres maximum)? ");
-  scanf("%s ", p_prin->nom);
+  printf("\nstats personnage \n");
+  affichage_stats(p_prin);
+  printf("\nstats ennemis \n");
+  affichage_stats(p_enne);
+
   while(continu >= 1){
     init_personnage(p_enne);
     init_personnage_enne(p_enne);
