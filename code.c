@@ -72,7 +72,6 @@ personnages init_personnage(){
   for (i=0; i<19; i++){
     p.nom[i]='\0';
   }
-  srand(time(NULL));
   p.force = 45 + aleat(-10, 10);  /*Les stats sont tiré aléatoirement a chaque nouvelle partie*/
   p.agilite = 45 + aleat(-10, 10);  /*ennemi comme personnage principal*/
   p.dexterite = 45 + aleat(-10, 10);
@@ -294,12 +293,13 @@ void decisionia(coup a, personnage ia, personnage perso){
 
 void calcul_attaque(coup a, personnage aa, personnage bb){
   int precis, dmg;
-  srand(time(NULL));
   precis = aleat(0,100);
+  printf("%d est a ce point précis!\n", precis);
   /*La precision est calculé en lancant 1d100. Bien qu'on peut largement dépassé*/
   if (bb->esquive == 1){
-    a->precision -= 0.5* bb->agilite;
-    printf("%s est dans l'état esquive! \n", bb->nom);
+    a->precision = a->precision - bb->agilite;
+    printf("%s est dans l'état esquive! \n\n", bb->nom);
+    printf("%d de precision sur le coup de %s\n", a->precision, aa->nom);
     /*le debuff de précision par l'esquive  est ici*/
     if (a->precision <10){
       a->precision = 10;
@@ -320,7 +320,7 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
     }
     aa->esquive = a->pe_esquive;
     if(a->pe_esquive>0){
-      printf("%s se met en posture d'esquive!", aa->nom);
+      printf("%s se met en posture d'esquive!\n", aa->nom);
     }
     aa->multidmg = aa->multidmg * a->pe_multidmg/100;
     aa->traterre += a->pe_traterre;
@@ -329,17 +329,17 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
     bb -> esquive += a -> en_esquive;
     bb -> multidmg = bb -> multidmg * a ->en_multidmg/100;
 
-    if(bb->traterre !=0){
+    if(bb->traterre ==0){
       bb -> traterre += a -> en_traterre;
       if (bb->traterre >0){
-        printf("%s est en position de faiblesse pendant 2 tours! Profitez en!", bb->nom);
+        printf("%s est en position de faiblesse pendant 2 tours! Profitez en!\n", bb->nom);
       }
     }
   }
   else{
     /*Si l'attaque ne réussi pas, et que l'esquive à réussi*/
     if(bb -> esquive == 1 && a -> degats !=0){
-      printf("%s a esquivé l'attaque de %s ! Il passe en contre-attaque!", bb->nom, aa->nom);
+      printf("%s a esquivé l'attaque de %s ! Il passe en contre-attaque!\n", bb->nom, aa->nom);
       bb -> esquive = 2;
       /*alors on passe l'etat esquive a 2*/
     }
@@ -421,8 +421,10 @@ void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
       }
     }
     if(egalite <= 50){
+      srand(time(NULL));
       calcul_attaque(b, bb, aa);
       if (aa->vie >0){
+        srand(time(NULL));
         calcul_attaque(a, aa, bb);
       }
     }
@@ -485,6 +487,7 @@ int main(){
   coup coupe;
   int go, vic, continu;
   int nbcoup;
+  srand(time(NULL));
 
   go = 0;
   vic = 0;
