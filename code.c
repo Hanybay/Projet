@@ -96,12 +96,12 @@ void init_personnage_enne(personnage p){
 }
 
 void init_coup(coup cp){
-  cp->degats = 0; /*Tout est à 0 pour l'initialisation d'un coup a part le multiplicateur*/
-  cp->etata->trdef = 0;
+  cp.degats = 0; /*Tout est à 0 pour l'initialisation d'un coup a part le multiplicateur*/
+  cp.pe_trdef = 0;
   cp->etata->esquive =0;
   cp->etata->multidmg = 1;
   cp->etata->traterre = 0;
-  cp->etate->trdef = 0;
+  cp.en_trdef = 0;
   cp->etate->esquive =0;
   cp->etate->multidmg = 1;
   cp->etate->traterre = 0;
@@ -429,11 +429,34 @@ void explication(){
 
 void affichage_stats(personnage p){
   /*On affichera les stats, on pourra voir aussi ceux des ennemis*/
-  printf("%s est le nom du personnage", p->nom);
+  printf("%s est le nom du personnage\n", p->nom);
   printf("Vie / Vie Max : %d, %d\n", p->vie, p->vitalite);
   printf("Force : %d\n", p->force);
   printf("Agilite : %d\n", p->agilite);
   printf("Dexterite : %d\n", p->dexterite);
+}
+
+void affichage_etats(personnage p){
+  printf("%s a les etats suivants :\n", p->nom);
+  printf("etat esquive est a %d\n", p->esquive);
+  printf("etat a terre est a %d\n", p->traterre);
+  printf("Multiplicateur de dégats est à %d", p->multidmg);
+  printf("Etat defensif est a %d\n", p->trdef);
+}
+
+void affichage_coup(coup cp){
+  printf("l'attaque fera %d dégats\n", cp->degats);
+  printf("l'attaque aura %d de précision\n", cp->precision);
+  printf("l'attaque sera de priorité %d\n", cp->priorite);
+
+  printf("Etat esquive est a %d\n", cp->pe_esquive);
+  printf("Etat a terre est a %d\n", cp->pe_traterre);
+  printf("Multiplicateur de dégats est à %d", cp->pe_multidmg);
+  printf("Etat defensif est a %d\n", cp->pe_trdef);
+  printf("Etat esquive est a %d\n", cp->en_esquive);
+  printf("Etat a terre est a %d\n", cp->en_traterre);
+  printf("Multiplicateur de dégats est à %d", cp->en_multidmg);
+  printf("Etat defensif est a %d\n", cp->en_trdef);
 }
 
 int main(){
@@ -468,8 +491,8 @@ int main(){
   while(continu >= 1){
     init_personnage(p_enne);
     init_personnage_enne(p_enne);
-    init_coup(coupe);
-    init_coup(coupp);
+    coupperso = init_coup();
+    coupeenne = init_coup();
     while(go==0 && vic == 0){
       while(nbcoup>5){
         while (scanf("%d ",&nbcoup) != 1 && nbcoup <8 && nbcoup>=0){
@@ -506,7 +529,13 @@ int main(){
             break;
         }
       }
+      printf("coup choisis par le joueur : \n");
+      affichage_coup(coupp);
       decisionia(coupe, p_enne, p_prin);
+      printf("coup choisis par l'ordinateur : \n")
+      affichage_coup(coupe);
+      printf("calcul du tour\n\n\n");
+
       calcul_du_tour(coupp, coupe, p_prin, p_enne);
       printf("Affichage des stats du personnage principal\n");
       affichage_stats(p_prin);
@@ -518,15 +547,15 @@ int main(){
       else{
         if (p_enne->vie <= 0){
           vic = 1;
+          p_prin -> vie = p_prin->vie + 15/100*p_prin->vitalite;
+          if (p_prin->vie > p_prin->vitalite){
+            p_prin->vie = p_prin->vitalite;
+          }
         }
       }
     }
     vic =0;
     go = 0;
-    p_prin -> vie = p_prin->vie + 15/100*p_prin->vitalite;
-    if (p_prin->vie > p_prin->vitalite){
-      p_prin->vie = p_prin->vitalite;
-    }
     while (scanf("%d ", &continu) != 1){
       printf("voulez vous continuez? \n");
     }
