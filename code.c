@@ -35,7 +35,7 @@ typedef struct{
 
 typedef coups *coup;
 
-int random(int x, int y){
+int alea(int x, int y){
   int alea;
   srand(time(NULL));
   alea = rand()%(y-x+1)+x; /*On aura besoin de cette fonctions pour beaucoup de choses*/
@@ -43,15 +43,15 @@ int random(int x, int y){
 }
 
 void init_personnage(personnage p){
-  p->force = 45 + random(-10, 10);  /*Les stats sont tiré aléatoirement a chaque nouvelle partie*/
-  p->agilite = 45 + random(-10, 10);  /*ennemi comme personnage principal*/
-  p->dexterite = 45 + random(-10, 10);
-  p->vitalite = 500 + random(-50, 50);
+  p->force = 45 + alea(-10, 10);  /*Les stats sont tiré aléatoirement a chaque nouvelle partie*/
+  p->agilite = 45 + alea(-10, 10);  /*ennemi comme personnage principal*/
+  p->dexterite = 45 + alea(-10, 10);
+  p->vitalite = 500 + alea(-50, 50);
   p->vie = p->vitalite; /*A l'initialisation Pv = Pv max*/
-  p->lesetat->trdef = 0;/*Les personnages n'ont pas d'état au début du combat*/
-  p->lesetat->esquive =0;
-  p->lesetat->multidmg = 1;
-  p->lesetat->traterre = 0;
+  p->etat->trdef = 0;/*Les personnages n'ont pas d'état au début du combat*/
+  p->etat->esquive =0;
+  p->etat->multidmg = 1;
+  p->etat->traterre = 0;
 }
 
 void init_personnage_prin(personnage p){
