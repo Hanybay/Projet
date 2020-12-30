@@ -70,7 +70,7 @@ void amelioration(int *pts, personnage p){
   int choix;
   confirmer = 0;
   choix = -1;
-  printf ("Voici le menu d'amélioration pour le personnage\n");
+  printf ("Voici le menu d'amélioration pour le personnage:\n");
   printf ("Le menu d'amélioration vous permettera de vous donner des statistiques supplémentaires\n");
   printf("Améliorer les point de vie max de 25 coutera 3 points, vous guérir de 30 pourcent de la vie coutera 1 points\n");
   printf("Le reste coutera 2 points pour chaque amélioration de 1\n");
