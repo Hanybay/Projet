@@ -44,7 +44,6 @@ int main(){
 
 
   while(continu >= 1){
-    init_personnage(p_enne);
     init_personnage_enne(p_enne,nb_combat);
     coupperso = init_coup();
     coupenne = init_coup();
@@ -111,7 +110,7 @@ int main(){
           vic = 1;
           *pts += 5;
           *nb_combat+=1;
-          p_prin -> vie = p_prin->vie + 50/100*p_prin->vitalite;
+          p_prin -> vie = p_prin->vie + ((50*p_prin->vitalite)/100);
           if (p_prin->vie > p_prin->vitalite){
             p_prin->vie = p_prin->vitalite;
           }

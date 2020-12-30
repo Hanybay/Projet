@@ -45,6 +45,15 @@ if(fichier==NULL){
     }
   fclose(fichier);
   }
+  p->force = 45 + aleat(-10, 10);  /*Les stats sont tiré aléatoirement a chaque nouvelle partie*/
+  p->agilite = 45 + aleat(-10, 10);  /*ennemi comme personnage principal*/
+  p->dexterite = 45 + aleat(-10, 10);
+  p->vitalite = 500 + aleat(-50, 50);
+  p->vie = p->vitalite; /*A l'initialisation Pv = Pv max*/
+  p->trdef = 0;
+  p->esquive = 0;
+  p->traterre=0;
+  p->multidmg=100;
 }
 
 void affichage_stats(personnage p){
@@ -118,7 +127,7 @@ void amelioration(int *pts, personnage p){
           }
           else{
             *pts-=1;
-            p -> vie = p->vie + 30/100*p->vitalite;
+            p -> vie = p->vie + ((p->vitalite*30)/100);
             if (p->vie > p->vitalite){
               p->vie = p->vitalite;
             }
