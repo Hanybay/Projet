@@ -15,6 +15,35 @@ void vider_buffer(){
   }while(c!=EOF&&c!='\n');
 }
 
+
+void remplir_fichier(){
+
+  FILE* fichier = NULL;
+  fichier = fopen("perso.txt", "w");
+
+  if(fichier==NULL){
+      printf("Erreur lors de l'ouverture du fichier");
+      exit(-1);
+  }
+
+  if (fichier != NULL){
+    fputs("Landy\n",fichier);
+    fputs("Manrray\n",fichier);
+    fputs("Rock_Lee\n",fichier);
+    fputs("GiGi\n",fichier);
+    fputs("C-Man\n",fichier);
+    fputs("FuBuBu\n",fichier);
+    fputs("Winston\n",fichier);
+    fputs("Lazuli_le_voyageur\n",fichier);
+    fputs("Umiko\n",fichier);
+    fputs("Hoshi_Estelle\n",fichier);
+    fputs("Kraken\n",fichier);
+    fputs("Aquamarine\n",fichier);
+    fclose(fichier);
+  }
+
+}
+
 void explication(){
   printf("Pour jouer à notre fabuleux jeux, vous disposez d'une action parmis 5 chaque tour.\n");
   printf("Attaque : attaque normal, les dégats sont sur la force brut,précision elevée, pas de changement d'état.\n");
