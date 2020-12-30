@@ -63,14 +63,6 @@ void affichage_etats(personnage p){
   printf("Etat defensif est a %d\n", p->trdef);
 }
 
-void init_personnage_enne(personnage p){
-  p->nom[0] = 'M';
-  p->nom[1] = 'i';
-  p->nom[2] = 'c';
-  p->nom[3] = 'h';
-  p->nom[4] = 'e';
-  p->nom[5] = 'l';
-}
 
 void affichage_stats(personnage p){
   /*On affichera les stats, on pourra voir aussi ceux des ennemis*/
