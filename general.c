@@ -15,6 +15,7 @@ int main(){
   coup coupe;
   int go, vic, continu;
   int nbcoup;
+  int points;
   srand(time(NULL));
 
   go = 0;
@@ -24,6 +25,8 @@ int main(){
   p_enne= &ennemi;
   coupp= &coupperso;
   coupe= &coupenne;
+  *pts = &points;
+  points = 20;
 
   principal = init_personnage();
   init_personnage_prin(p_prin);
@@ -35,11 +38,13 @@ int main(){
   affichage_stats(p_enne);
   nbcoup = -1;
 
+
   while(continu >= 1){
     init_personnage(p_enne);
     init_personnage_enne(p_enne);
     coupperso = init_coup();
     coupenne = init_coup();
+    amelioration(*pts ,p_prin);
     printf("je suis passé par là\n\n");
     while(go == 0 && vic == 0){
       while(nbcoup>4 || nbcoup<0){
@@ -100,6 +105,7 @@ int main(){
       else{
         if (p_enne->vie <= 0){
           vic = 1;
+          *pts += 5;
           p_prin -> vie = p_prin->vie + 50/100*p_prin->vitalite;
           if (p_prin->vie > p_prin->vitalite){
             p_prin->vie = p_prin->vitalite;

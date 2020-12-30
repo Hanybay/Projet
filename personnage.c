@@ -89,7 +89,7 @@ void affichage_etats(personnage p){
   printf("Etat defensif est a %d\n", p->trdef);
 }
 
-void amelioration(int pts, personnage p){
+void amelioration(int *pts, personnage p){
   int confirmer;
   int choix;
   confirmer = 0;
@@ -114,11 +114,11 @@ void amelioration(int pts, personnage p){
           printf("Vous êtes déjà à la valeur maximal!\n");
         }
         else{
-          if(pts<3){
+          if(*pts<3){
             printf("vous n'avez pas assez de points!\n");
           }
           else{
-            pts-=3;
+            *pts-=3;
             p->vitalite = p->vitalite + 25;
             p->vie = p->vie +25;
             if(p->vitalite >Vie_max){
@@ -137,11 +137,11 @@ void amelioration(int pts, personnage p){
           printf("Vos pv sont déjà au maximum!");
         }
         else{
-          if (pts<1){
+          if (*pts<1){
             printf("Vous n'avez pas assez de points!");
           }
           else{
-            pts-=1;
+            *pts-=1;
             p -> vie = p->vie + 30/100*p->vitalite;
             if (p->vie > p->vitalite){
               p->vie = p->vitalite;
@@ -155,11 +155,11 @@ void amelioration(int pts, personnage p){
           printf("Vous êtes déjà à la valeur maximal!\n");
         }
         else{
-          if(pts<2){
+          if(*pts<2){
             printf("vous n'avez pas assez de points!\n");
           }
           else{
-            pts-=2;
+            *pts-=2;
             p->force = p->force + 1;
             printf("Vous avez utiliser 2 points afin de vous augmentez la force\n");
             printf("voici vos nouvelles statistiques : Force = %d\n", p->force);
@@ -171,11 +171,11 @@ void amelioration(int pts, personnage p){
           printf("Vous êtes déjà à la valeur maximal!\n");
         }
         else{
-          if(pts<2){
+          if(*pts<2){
             printf("vous n'avez pas assez de points!\n");
           }
           else{
-            pts-=2;
+            *pts-=2;
             p->agilite = p->agilite + 1;
             printf("Vous avez utiliser 2 points afin de vous augmentez la force\n");
             printf("voici vos nouvelles statistiques : Agilite = %d\n", p->agilite);
@@ -187,11 +187,11 @@ void amelioration(int pts, personnage p){
           printf("Vous êtes déjà à la valeur maximal!\n");
         }
         else{
-          if(pts<2){
+          if(*pts<2){
             printf("vous n'avez pas assez de points!\n");
           }
           else{
-            pts-=2;
+            *pts-=2;
             p->dexterite = p->dexterite + 1;
             printf("Vous avez utiliser 2 points afin de vous augmentez la force\n");
             printf("voici vos nouvelles statistiques : Dexterite = %d\n", p->dexterite);
