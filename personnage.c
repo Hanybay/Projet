@@ -81,7 +81,7 @@ void amelioration(int *pts, personnage p){
       printf("0 : Vie max, cout 3 points; 1 : soin 30 pour cent de vie, cout 1 point");
       printf("2 : +1 force, 3:  +1 agilité, 4: +1 dexterite; cout 2 points");
       printf("5 : regarder vos statistiques; 6 : quitter le menu d'amélioration");
-      printf("Vous avez actuellement %d point(s)", pts);
+      printf("Vous avez actuellement %d point(s)", *pts);
       vider_buffer();
     } while(scanf("%d", &choix) <1 && (choix<0 || choix >7));
     switch(choix){
