@@ -27,13 +27,23 @@ void init_personnage_prin(personnage p){
      /*Afin de rentrer le prénom, il faudra rentrer*/
 }
 
-void init_personnage_enne(personnage p){
-  p->nom[0] = 'M';
-  p->nom[1] = 'i';
-  p->nom[2] = 'c';
-  p->nom[3] = 'h';
-  p->nom[4] = 'e';
-  p->nom[5] = 'l';
+void init_personnage_enne(personnage p,int nb_ligne){
+int i;
+int j = (nb_ligne mod 12) + 1;
+FILE* fichier = NULL;
+fichier = fopen("perso.txt","r");
+
+if(fichier==NULL){
+  printf("erreur");
+  exit(-1);
+}
+
+  if (fichier != NULL){
+  for(i = 0; i < nb_ligne; i++){
+    fscanf(fichier, "%s", p->nom);
+    }
+  fclose(fichier);
+  }
 }
 
 void affichage_stats(personnage p){
