@@ -74,14 +74,14 @@ void amelioration(int *pts, personnage p){
   printf ("Le menu d'amélioration vous permettera de vous donner des statistiques supplémentaires\n");
   printf("Améliorer les point de vie max de 25 coutera 3 points, vous guérir de 30 pourcent de la vie coutera 1 points\n");
   printf("Le reste coutera 2 points pour chaque amélioration de 1\n");
-  printf("Notez que chaque entree au menu d'amelioration vous regènera de 15 pourcent de votre vie maximum");
+  printf("Notez que chaque entree au menu d'amelioration vous regènera de 15 pourcent de votre vie maximum\n\n");
   while (confirmer==0){
     do{
-      printf("Que voulez vous améliorer?");
-      printf("0 : Vie max, cout 3 points; 1 : soin 30 pour cent de vie, cout 1 point");
-      printf("2 : +1 force, 3:  +1 agilité, 4: +1 dexterite; cout 2 points");
-      printf("5 : regarder vos statistiques; 6 : quitter le menu d'amélioration");
-      printf("Vous avez actuellement %d point(s)", *pts);
+      printf("0 : Vie max, cout 3 points; 1 : soin 30 pour cent de vie, cout 1 point\n");
+      printf("2 : +1 force, 3:  +1 agilité, 4: +1 dexterite; cout 2 points\n");
+      printf("5 : regarder vos statistiques; 6 : quitter le menu d'amélioration\n");
+      printf("Vous avez actuellement %d point(s)\n", *pts);
+      printf("Que voulez vous améliorer?\n");
       vider_buffer();
     } while(scanf("%d", &choix) <1 && (choix<0 || choix >7));
     switch(choix){
@@ -110,11 +110,11 @@ void amelioration(int *pts, personnage p){
         break;
       case 1:
         if (p->vie==p->vitalite){
-          printf("Vos pv sont déjà au maximum!");
+          printf("Vos pv sont déjà au maximum!\n");
         }
         else{
           if (*pts<1){
-            printf("Vous n'avez pas assez de points!");
+            printf("Vous n'avez pas assez de points!\n");
           }
           else{
             *pts-=1;
@@ -182,5 +182,6 @@ void amelioration(int *pts, personnage p){
         break;
     }
     choix = -1;
+    printf("\n");
   }
 }
