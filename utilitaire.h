@@ -8,3 +8,4 @@
 int aleat(int x, int y);
 void vider_buffer();
 void explication();
+void remplir_fichier();
