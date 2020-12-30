@@ -16,7 +16,9 @@ int main(){
   int go, vic, continu;
   int nbcoup;
   int points;
+  int comb;
   int *pts = &points;
+  int *nb_combat = &comb;
   srand(time(NULL));
 
   go = 0;
@@ -27,12 +29,13 @@ int main(){
   coupp= &coupperso;
   coupe= &coupenne;
   points = 20;
+  comb = 0;
 
 
   principal = init_personnage();
   init_personnage_prin(p_prin);
   ennemi = init_personnage();
-  init_personnage_enne(p_enne);
+  init_personnage_enne(p_enne,nb_combat);
   printf("\nstats personnage \n");
   affichage_stats(p_prin);
   printf("\nstats ennemis \n");
@@ -42,7 +45,7 @@ int main(){
 
   while(continu >= 1){
     init_personnage(p_enne);
-    init_personnage_enne(p_enne);
+    init_personnage_enne(p_enne,nb_combat);
     coupperso = init_coup();
     coupenne = init_coup();
     amelioration(pts ,p_prin);
@@ -107,6 +110,7 @@ int main(){
         if (p_enne->vie <= 0){
           vic = 1;
           *pts += 5;
+          *nb_combat+=1;
           p_prin -> vie = p_prin->vie + 50/100*p_prin->vitalite;
           if (p_prin->vie > p_prin->vitalite){
             p_prin->vie = p_prin->vitalite;
