@@ -21,7 +21,7 @@ typedef personnages *personnage;
 
 personnages init_personnage();
 void init_personnage_prin(personnage p);
-void init_personnage_enne(personnage p,int nb_ligne);
+void init_personnage_enne(personnage p,int *nb_ligne);
 void affichage_stats(personnage p);
 void affichage_etats(personnage p);
-void amelioration(int pts, personnage p)
+void amelioration(int pts, personnage p);
