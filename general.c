@@ -16,6 +16,7 @@ int main(){
   int go, vic, continu;
   int nbcoup;
   int points;
+  int *pts;
   srand(time(NULL));
 
   go = 0;
