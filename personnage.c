@@ -26,7 +26,7 @@ void init_personnage_prin(personnage p){
     printf("Le nom de votre personnage en 19 lettres ou moins?  ");
     vider_buffer();
   }
-  for(i=0; i<19 || string[i]='\0';i++){
+  for(i=0; i<19 || string[i]=='\0';i++){
     p->nom[i]=string[i];
   }
   p->nom[19] = '\0';
