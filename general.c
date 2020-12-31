@@ -110,10 +110,6 @@ int main(){
           vic = 1;
           *pts += 5;
           *nb_combat+=1;
-          p_prin -> vie = p_prin->vie + ((50*p_prin->vitalite)/100);
-          if (p_prin->vie > p_prin->vitalite){
-            p_prin->vie = p_prin->vitalite;
-          }
         }
       }
     }
