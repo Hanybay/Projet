@@ -108,7 +108,7 @@ int main(){
       else{
         if (p_enne->vie <= 0){
           vic = 1;
-          *pts += 5;
+          *pts += 10;
           *nb_combat+=1;
         }
       }
