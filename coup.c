@@ -79,7 +79,7 @@ void esquive (coup coupperso,personnage p, personnage e){
   /*la priortité est plus elevé qu'une attaque, en espérant être plus rapide que l'ennemi*/
 
   /*Precision de l'attaque, le minimum sera 10%, il n'y a pas de maximum defini*/
-  coupperso->precision = 30 + p->dexterite*2 - e->agilite;
+  coupperso->precision = 30 + p->dexterite*1.2 - e->agilite;
   /*La précision est proportionnel à la dexterite et sera contrecarré par l'agilite ennemi*/
 
   /*Etats allie */
@@ -104,7 +104,7 @@ void couppied(coup coupperso, personnage p, personnage e){ /* p = Attaquant, e =
   /*Priorité normale*/
 
   /*Precision*/
-  coupperso -> precision = 20 + p -> dexterite*1.5 - e -> agilite;
+  coupperso -> precision = 20 + p -> dexterite*1.2 - e -> agilite;
   /*La priorité de base est basse, mais si la dexterite est bien monte, ce ne sera pas un probleme*/
 
   /*Etats allie*/

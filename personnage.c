@@ -30,9 +30,9 @@ void init_personnage_prin(personnage p){
 void init_personnage_enne(personnage p,int *nb_ligne){
 int i;
 int j, difficulte;
-difficulte = (*nb_ligne)/2;
-if (difficulte >200){
-  difficulte = 200;
+difficulte = (*nb_ligne)/4;
+if (difficulte >400){
+  difficulte = 400;
 }
 j = ( *nb_ligne % 13) + 1;
 
@@ -50,10 +50,10 @@ if(fichier==NULL){
     }
   fclose(fichier);
   }
-  p->force = 45 + aleat(-10, 10+difficulte);  /*Les stats sont tiré aléatoirement a chaque nouvelle partie*/
-  p->agilite = 45 + aleat(-10, 10+difficulte);  /*ennemi comme personnage principal*/
-  p->dexterite = 45 + aleat(-10, 10+difficulte);
-  p->vitalite = 500 + aleat(-50, 50+difficulte*162) + difficulte*162;
+  p->force = 45 + aleat(-10, 10+difficulte/2);  /*Les stats sont tiré aléatoirement a chaque nouvelle partie*/
+  p->agilite = 45 + aleat(-10, 10+difficulte/2);  /*ennemi comme personnage principal*/
+  p->dexterite = 45 + aleat(-10, 10+difficulte/2);
+  p->vitalite = 500 + aleat(-50, 50+difficulte*81) + difficulte*81;
   p->vie = p->vitalite; /*A l'initialisation Pv = Pv max*/
   p->trdef = 0;
   p->esquive = 0;
