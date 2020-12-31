@@ -24,6 +24,7 @@ void init_personnage_prin(personnage p){
     printf("Le nom de votre personnage en 19 lettres ou moins?  ");
     vider_buffer();
   }
+  p->nom[19] = '\0';
      /*Afin de rentrer le prénom, il faudra rentrer*/
 }
 
