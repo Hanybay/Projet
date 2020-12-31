@@ -3,13 +3,13 @@
 void decisionia(coup a, personnage ia, personnage perso){
   int decision;
   decision = aleat(0, 100);
-  if (decision<60){
+  if (decision<75){
     attaque(a, ia, perso);
   }
-  if(decision<80 && decision>=60){
+  if(decision<90 && decision>=75){
     defense(a, ia, perso);
   }
-  if(decision<100 && decision>=80){
+  if(decision<100 && decision>=90){
     esquive(a, ia, perso);
   }
   /*
@@ -54,11 +54,8 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
     if(a->pe_esquive>0){
       printf("%s se met en posture d'esquive!\n", aa->nom);
     }
-    aa->multidmg = aa->multidmg * a->pe_multidmg/100;
-    aa->traterre += a->pe_traterre;
+
     /*Etats ennemis*/
-    bb -> trdef += a -> en_trdef;
-    bb -> esquive += a -> en_esquive;
     bb -> multidmg = bb -> multidmg * a ->en_multidmg/100;
 
     if(bb->traterre ==0){
@@ -96,10 +93,10 @@ void findetour(personnage a, personnage b){
 
   /*On applique l'état, baissant le multiplicateur ennemi*/
   if(a->trdef > 1){
-    b->multidmg = b->multidmg*0.66;
+    b->multidmg = b->multidmg*0.6;
   }
   if(b->trdef > 1){
-    a->multidmg = a->multidmg*0.66;
+    a->multidmg = a->multidmg*0.6;
   };
   /*Puis on baise de 1 le nombre de tour de défense*/
   a->trdef -=1;
@@ -107,10 +104,10 @@ void findetour(personnage a, personnage b){
 
   /*On regarde l'état esquive, si il a fonctionner on applique l'effet*/
   if(a->esquive == 2){
-    a->multidmg = a->multidmg*1.5;
+    a->multidmg = a->multidmg*1.8;
   }
   if(b -> esquive == 2){
-    b -> multidmg = b ->multidmg*1.5;
+    b -> multidmg = b ->multidmg*1.8;
   }
   /*Puis quoiqu'il arrive, on enlève l'état esquive*/
   a -> esquive = 0;
@@ -153,10 +150,8 @@ void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
       }
     }
     if(egalite <= 50){
-      srand(time(NULL));
       calcul_attaque(b, bb, aa);
       if (aa->vie >0){
-        srand(time(NULL));
         calcul_attaque(a, aa, bb);
       }
     }
