@@ -59,7 +59,7 @@ if(fichier==NULL){
   p->force = 45 + aleat(-10+difficulte/2, 10+difficulte/2);  /*Les stats sont tiré aléatoirement a chaque nouvelle partie*/
   p->agilite = 45 + aleat(-10+difficulte/2, 10+difficulte/2);  /*ennemi comme personnage principal*/
   p->dexterite = 45 + aleat(-10+difficulte/2, 10+difficulte/2);
-  p->vitalite = 500 + aleat(-50+difficulte*9, 50+difficulte*81) + difficulte*81;
+  p->vitalite = 500 + aleat(-50+(difficulte*9), 50+(difficulte*81)) + difficulte*81;
   p->vie = p->vitalite; /*A l'initialisation Pv = Pv max*/
   p->trdef = 0;
   p->esquive = 0;
