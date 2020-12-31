@@ -3,13 +3,13 @@
 void decisionia(coup a, personnage ia, personnage perso){
   int decision;
   decision = aleat(0, 100);
-  if (decision<60){
+  if (decision<75){
     attaque(a, ia, perso);
   }
-  if(decision<80 && decision>=60){
+  if(decision<90 && decision>=75){
     defense(a, ia, perso);
   }
-  if(decision<100 && decision>=80){
+  if(decision<100 && decision>=90){
     esquive(a, ia, perso);
   }
   /*
@@ -26,21 +26,22 @@ void decisionia(coup a, personnage ia, personnage perso){
 void calcul_attaque(coup a, personnage aa, personnage bb){
   int precis, dmg;
   precis = aleat(0,100);
-  printf("%d est a ce point précis!\n", precis);
+  printf("le coup de %s est a ce point précis : %d\n", aa->nom, precis);
   /*La precision est calculé en lancant 1d100. Bien qu'on peut largement dépassé*/
   if (bb->esquive == 1){
     a->precision = a->precision - bb->agilite;
     printf("%s est dans l'état esquive! \n\n", bb->nom);
-    printf("%d de precision sur le coup de %s\n", a->precision, aa->nom);
+
     /*le debuff de précision par l'esquive  est ici*/
     if (a->precision <10){
       a->precision = 10;
     /*La précision ne pas être plus bas que "10%""*/
     }
   }
+  printf("%d de precision sur le coup de %s\n", a->precision, aa->nom);
   if(a -> precision >= precis){
     /*Si l'attaque réussi, alors tout est appliqué*/
-    dmg = a -> degats*aa->multidmg/100;
+    dmg = a -> degats*(aa->multidmg/100);
     bb -> vie -= dmg;
     if(dmg>0){
       printf("%s a perdu %d pvs!\n", bb->nom, dmg);
@@ -54,12 +55,9 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
     if(a->pe_esquive>0){
       printf("%s se met en posture d'esquive!\n", aa->nom);
     }
-    aa->multidmg = aa->multidmg * a->pe_multidmg/100;
-    aa->traterre += a->pe_traterre;
+
     /*Etats ennemis*/
-    bb -> trdef += a -> en_trdef;
-    bb -> esquive += a -> en_esquive;
-    bb -> multidmg = bb -> multidmg * a ->en_multidmg/100;
+    bb -> multidmg = bb -> multidmg * (a ->en_multidmg/100);
 
     if(bb->traterre ==0){
       bb -> traterre += a -> en_traterre;
@@ -96,10 +94,10 @@ void findetour(personnage a, personnage b){
 
   /*On applique l'état, baissant le multiplicateur ennemi*/
   if(a->trdef > 1){
-    b->multidmg = b->multidmg*0.66;
+    b->multidmg = (b->multidmg*60)/100;
   }
   if(b->trdef > 1){
-    a->multidmg = a->multidmg*0.66;
+    a->multidmg = (a->multidmg*60)/100;
   };
   /*Puis on baise de 1 le nombre de tour de défense*/
   a->trdef -=1;
@@ -107,10 +105,10 @@ void findetour(personnage a, personnage b){
 
   /*On regarde l'état esquive, si il a fonctionner on applique l'effet*/
   if(a->esquive == 2){
-    a->multidmg = a->multidmg*1.5;
+    a->multidmg = a->multidmg*1.8;
   }
   if(b -> esquive == 2){
-    b -> multidmg = b ->multidmg*1.5;
+    b -> multidmg = b ->multidmg*1.8;
   }
   /*Puis quoiqu'il arrive, on enlève l'état esquive*/
   a -> esquive = 0;
@@ -153,10 +151,8 @@ void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
       }
     }
     if(egalite <= 50){
-      srand(time(NULL));
       calcul_attaque(b, bb, aa);
       if (aa->vie >0){
-        srand(time(NULL));
         calcul_attaque(a, aa, bb);
       }
     }

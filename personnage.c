@@ -10,6 +10,7 @@ personnages init_personnage(){
   p.agilite = 45 + aleat(-10, 10);  /*ennemi comme personnage principal*/
   p.dexterite = 45 + aleat(-10, 10);
   p.vitalite = 500 + aleat(-50, 50);
+  printf("%d", p.vitalite);
   p.vie = p.vitalite; /*A l'initialisation Pv = Pv max*/
   p.trdef = 0;
   p.esquive = 0;
@@ -19,18 +20,28 @@ personnages init_personnage(){
 }
 
 void init_personnage_prin(personnage p){
+  char string[255];
+  int i;
   printf("Le nom de votre personnage en 19 lettres ou moins?  ");
-  while(scanf("%s ", p->nom)<1){
+  while(scanf("%s ", string)<1){
     printf("Le nom de votre personnage en 19 lettres ou moins?  ");
     vider_buffer();
+  }
+  for(i=0; i<19 && string[i]!='\0';i++){
+    p->nom[i]=string[i];
   }
      /*Afin de rentrer le prénom, il faudra rentrer*/
 }
 
 void init_personnage_enne(personnage p,int *nb_ligne){
 int i;
-int j;
-j = ( *nb_ligne % 12) + 1;
+int j, difficulte;
+difficulte = (*nb_ligne)/3;
+if (difficulte >400){
+  difficulte = 400;
+}
+j = ( *nb_ligne % 13) + 1;
+
 FILE* fichier = NULL;
 fichier = fopen("perso.txt","r");
 
@@ -45,6 +56,15 @@ if(fichier==NULL){
     }
   fclose(fichier);
   }
+  p->force = 45 + aleat(-10+difficulte/2, 10+difficulte/2);  /*Les stats sont tiré aléatoirement a chaque nouvelle partie*/
+  p->agilite = 45 + aleat(-10+difficulte/2, 10+difficulte/2);  /*ennemi comme personnage principal*/
+  p->dexterite = 45 + aleat(-10+difficulte/2, 10+difficulte/2);
+  p->vitalite = 500 + aleat(-50+(difficulte*9), 50+(difficulte*81)) + difficulte*81;
+  p->vie = p->vitalite; /*A l'initialisation Pv = Pv max*/
+  p->trdef = 0;
+  p->esquive = 0;
+  p->traterre=0;
+  p->multidmg=100;
 }
 
 void affichage_stats(personnage p){
@@ -70,14 +90,18 @@ void amelioration(int *pts, personnage p){
   int choix;
   confirmer = 0;
   choix = -1;
+  p -> vie = p->vie + ((10*p->vitalite)/100);
+  if (p->vie > p->vitalite){
+    p->vie = p->vitalite;
+  }
   printf ("Voici le menu d'amélioration pour le personnage:\n");
   printf ("Le menu d'amélioration vous permettera de vous donner des statistiques supplémentaires\n");
-  printf("Améliorer les point de vie max de 25 coutera 3 points, vous guérir de 30 pourcent de la vie coutera 1 points\n");
+  printf("Améliorer les point de vie max de 25 coutera 3 points, vous guérir de 15 pourcent de la vie coutera 1 points\n");
   printf("Le reste coutera 2 points pour chaque amélioration de 1\n");
-  printf("Notez que chaque entree au menu d'amelioration vous regènera de 15 pourcent de votre vie maximum\n\n");
+  printf("Notez que chaque entree au menu d'amelioration vous regènera de 10 pourcent de votre vie maximum\n\n");
   while (confirmer==0){
     do{
-      printf("0 : Vie max, cout 3 points; 1 : soin 30 pour cent de vie, cout 1 point\n");
+      printf("0 : Vie max, cout 3 points; 1 : soin 15 pour cent de vie, cout 1 point\n");
       printf("2 : +1 force, 3:  +1 agilité, 4: +1 dexterite; cout 2 points\n");
       printf("5 : regarder vos statistiques; 6 : quitter le menu d'amélioration\n");
       printf("Vous avez actuellement %d point(s)\n", *pts);
@@ -118,7 +142,7 @@ void amelioration(int *pts, personnage p){
           }
           else{
             *pts-=1;
-            p -> vie = p->vie + 30/100*p->vitalite;
+            p -> vie = p->vie + ((p->vitalite*15)/100);
             if (p->vie > p->vitalite){
               p->vie = p->vitalite;
             }
