@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
-#include "tour.h"
+#include "save.h"
 
 
 int main(){
@@ -51,12 +51,12 @@ int main(){
     while(go == 0 && vic == 0){
       while(nbcoup>4 || nbcoup<0){
         nbcoup= -1;
-        while (nbcoup >8 || nbcoup<0){
+        while (nbcoup >9 || nbcoup<0){
           do {
             printf("\nquel sera votre coup?\n");
             printf("0 = attaque, 1 = defense, 2 = esquive\n");
             printf("3 = coup de pied, 4 = Mettre a terre, 5 = explications\n");
-            printf("6 = Vos stats, 7 = stats ennemi\n");
+            printf("6 = Vos stats, 7 = stats ennemi, 8 = sauvegarde\n");
             vider_buffer();
           }while (scanf("%d", &nbcoup) < 1);
         }
@@ -84,6 +84,9 @@ int main(){
             break;
           case 7 :
             affichage_stats(p_enne);
+            break;
+          case 8 :
+            sauvegarde(pts,nb_combat,p_prin,p_enne);
             break;
         }
       }
