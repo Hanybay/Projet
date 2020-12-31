@@ -34,22 +34,20 @@ int main(){
 
   principal = init_personnage();
   init_personnage_prin(p_prin);
-  ennemi = init_personnage();
-  init_personnage_enne(p_enne,nb_combat);
   printf("\nstats personnage \n");
   affichage_stats(p_prin);
+  ennemi = init_personnage();
+  init_personnage_enne(p_enne,nb_combat);
   printf("\nstats ennemis \n");
   affichage_stats(p_enne);
   nbcoup = -1;
 
 
   while(continu >= 1){
-    init_personnage(p_enne);
     init_personnage_enne(p_enne,nb_combat);
     coupperso = init_coup();
     coupenne = init_coup();
     amelioration(pts ,p_prin);
-    printf("je suis passé par là\n\n");
     while(go == 0 && vic == 0){
       while(nbcoup>4 || nbcoup<0){
         nbcoup= -1;
@@ -109,12 +107,8 @@ int main(){
       else{
         if (p_enne->vie <= 0){
           vic = 1;
-          *pts += 5;
+          *pts += 10;
           *nb_combat+=1;
-          p_prin -> vie = p_prin->vie + 50/100*p_prin->vitalite;
-          if (p_prin->vie > p_prin->vitalite){
-            p_prin->vie = p_prin->vitalite;
-          }
         }
       }
     }
