@@ -48,7 +48,6 @@ int main(){
     coupperso = init_coup();
     coupenne = init_coup();
     amelioration(pts ,p_prin);
-    printf("je suis passé par là\n\n");
     while(go == 0 && vic == 0){
       while(nbcoup>4 || nbcoup<0){
         nbcoup= -1;

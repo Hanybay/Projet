@@ -54,7 +54,7 @@ void defense (coup coupperso,personnage p, personnage e){ /*p = Attaquant, e = A
   /*Cela inflige un debuff de dégâts a l'ennemi*/
 
   if (p->trdef<1){
-    coupperso->en_multidmg = 66;
+    coupperso->en_multidmg = 60;
   }
   else{
     coupperso->en_multidmg = 100;

@@ -26,21 +26,22 @@ void decisionia(coup a, personnage ia, personnage perso){
 void calcul_attaque(coup a, personnage aa, personnage bb){
   int precis, dmg;
   precis = aleat(0,100);
-  printf("%d est a ce point précis!\n", precis);
+  printf("le coup de %s est a ce point précis : %d\n", aa->nom, precis);
   /*La precision est calculé en lancant 1d100. Bien qu'on peut largement dépassé*/
   if (bb->esquive == 1){
     a->precision = a->precision - bb->agilite;
     printf("%s est dans l'état esquive! \n\n", bb->nom);
-    printf("%d de precision sur le coup de %s\n", a->precision, aa->nom);
+
     /*le debuff de précision par l'esquive  est ici*/
     if (a->precision <10){
       a->precision = 10;
     /*La précision ne pas être plus bas que "10%""*/
     }
   }
+  printf("%d de precision sur le coup de %s\n", a->precision, aa->nom);
   if(a -> precision >= precis){
     /*Si l'attaque réussi, alors tout est appliqué*/
-    dmg = a -> degats*aa->multidmg/100;
+    dmg = a -> degats*(aa->multidmg/100);
     bb -> vie -= dmg;
     if(dmg>0){
       printf("%s a perdu %d pvs!\n", bb->nom, dmg);
@@ -56,7 +57,7 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
     }
 
     /*Etats ennemis*/
-    bb -> multidmg = bb -> multidmg * a ->en_multidmg/100;
+    bb -> multidmg = bb -> multidmg * (a ->en_multidmg/100);
 
     if(bb->traterre ==0){
       bb -> traterre += a -> en_traterre;
@@ -93,10 +94,10 @@ void findetour(personnage a, personnage b){
 
   /*On applique l'état, baissant le multiplicateur ennemi*/
   if(a->trdef > 1){
-    b->multidmg = b->multidmg*0.6;
+    b->multidmg = (b->multidmg*60)/100;
   }
   if(b->trdef > 1){
-    a->multidmg = a->multidmg*0.6;
+    a->multidmg = (a->multidmg*60)/100;
   };
   /*Puis on baise de 1 le nombre de tour de défense*/
   a->trdef -=1;
