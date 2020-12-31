@@ -84,15 +84,15 @@ void amelioration(int *pts, personnage p){
   int choix;
   confirmer = 0;
   choix = -1;
-  p_prin -> vie = p_prin->vie + ((10*p_prin->vitalite)/100);
-  if (p_prin->vie > p_prin->vitalite){
-    p_prin->vie = p_prin->vitalite;
+  p -> vie = p->vie + ((10*p->vitalite)/100);
+  if (p->vie > p->vitalite){
+    p->vie = p->vitalite;
   }
   printf ("Voici le menu d'amélioration pour le personnage:\n");
   printf ("Le menu d'amélioration vous permettera de vous donner des statistiques supplémentaires\n");
   printf("Améliorer les point de vie max de 25 coutera 3 points, vous guérir de 15 pourcent de la vie coutera 1 points\n");
   printf("Le reste coutera 2 points pour chaque amélioration de 1\n");
-  printf("Notez que chaque entree au menu d'amelioration vous regènera de 15 pourcent de votre vie maximum\n\n");
+  printf("Notez que chaque entree au menu d'amelioration vous regènera de 10 pourcent de votre vie maximum\n\n");
   while (confirmer==0){
     do{
       printf("0 : Vie max, cout 3 points; 1 : soin 15 pour cent de vie, cout 1 point\n");
