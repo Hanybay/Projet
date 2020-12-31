@@ -10,6 +10,7 @@ personnages init_personnage(){
   p.agilite = 45 + aleat(-10, 10);  /*ennemi comme personnage principal*/
   p.dexterite = 45 + aleat(-10, 10);
   p.vitalite = 500 + aleat(-50, 50);
+  printf("%d", p.vitalite);
   p.vie = p.vitalite; /*A l'initialisation Pv = Pv max*/
   p.trdef = 0;
   p.esquive = 0;
@@ -19,17 +20,16 @@ personnages init_personnage(){
 }
 
 void init_personnage_prin(personnage p){
-  char string[20];
+  char string[255];
   int i;
   printf("Le nom de votre personnage en 19 lettres ou moins?  ");
   while(scanf("%s ", string)<1){
     printf("Le nom de votre personnage en 19 lettres ou moins?  ");
     vider_buffer();
   }
-  for(i=0; i<19 || string[i]=='\0';i++){
+  for(i=0; i<19 && string[i]!='\0';i++){
     p->nom[i]=string[i];
   }
-  p->nom[19] = '\0';
      /*Afin de rentrer le prénom, il faudra rentrer*/
 }
 

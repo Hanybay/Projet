@@ -34,10 +34,10 @@ int main(){
 
   principal = init_personnage();
   init_personnage_prin(p_prin);
-  ennemi = init_personnage();
-  init_personnage_enne(p_enne,nb_combat);
   printf("\nstats personnage \n");
   affichage_stats(p_prin);
+  ennemi = init_personnage();
+  init_personnage_enne(p_enne,nb_combat);
   printf("\nstats ennemis \n");
   affichage_stats(p_enne);
   nbcoup = -1;
