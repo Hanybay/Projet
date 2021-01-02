@@ -36,13 +36,10 @@ void nouvelle_partie(){
   personnage p_prin;
   personnages ennemi;
   personnage p_enne;
-  coups coupperso;
-  coups coupenne;
-  coup coupp;
-  coup coupe;
-  int nbcoup;
   int points;
   int comb;
+  int vic;
+  int *victoire = &vic;
   int soin;
   int *csoigner = &soin;
   int *pts = &points;
@@ -56,7 +53,7 @@ void nouvelle_partie(){
   ennemi = init_personnage();
   init_personnage_prin(p_prin);
   init_personnage_enne(p_enne,nb_combat);
-  lancer_jeu(p_prin, p_enne, pts, nb_combat, vic, csoigner);
+  lancer_jeu(p_prin, p_enne, pts, nb_combat, victoire, csoigner);
 }
 
 void charger_partie(){
@@ -64,15 +61,11 @@ void charger_partie(){
   personnage p_prin;
   personnages ennemi;
   personnage p_enne;
-  coups coupperso;
-  coups coupenne;
-  coup coupp;
-  coup coupe;
-  int nbcoup;
   int points;
   int comb;
   int n_save;
   int soin;
+  int vic;
   int *csoigner = &soin;
   int *pts = &points;
   int *nb_combat = &comb;
@@ -96,8 +89,15 @@ void scores(){
 
 
 
-void lancer_jeu(personnage *p_prin, personnage *p_enne, int *pts, int *nb_combat, int *vic, int *csoigner){
+void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, int *vic, int *csoigner){
   int go, continu, nbcoup, save;
+  coups coupperso;
+  coups coupenne;
+  coup coupp;
+  coup coupe;
+  int nbcoup;
+  coupp=&coupperso;
+  coupe=&coupenne;
   int *asave = &save
   continu = 1;
   save=0;
