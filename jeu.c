@@ -110,7 +110,7 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
     if (*asave != 1){
       *vic = 0;
       while(go == 0 && *vic == 0){
-        while(nbcoup>4 || nbcoup<0){
+        while((nbcoup>4 || nbcoup<0) && nbcoup != 9){
           nbcoup= -1;
           while (nbcoup >10 || nbcoup<0){
             do {
@@ -153,6 +153,7 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
             case 9 :
               sauvegarde(pts,nb_combat,p_prin,p_enne, vic, csoigner);
               continu =0;
+              go=1;
               break;
           }
         }
@@ -181,12 +182,14 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
               *nb_combat+=1;
             }
           }
-        }  
+        }
       }
-      printf("voulez vous continuer? 0 pour non, 1 pour oui\n");
-      while (scanf("%d", &continu) != 1){
-        vider_buffer();
-        printf("voulez vous continuez? 0 pour non, 1 pour oui\n");
+      if(continu >=1){
+        printf("voulez vous continuer? 0 pour non, 1 pour oui\n");
+        while (scanf("%d", &continu) != 1){
+          vider_buffer();
+          printf("voulez vous continuez? 0 pour non, 1 pour oui\n");
+        }
       }
     }
     else{
