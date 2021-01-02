@@ -109,33 +109,82 @@ void load_game(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *cs
       }
 
       if (fichier != NULL){
-        fscanf(fichier,"%s",p->nom);
-        fscanf(fichier,"%d",&p->vie);
-        fscanf(fichier,"%d",&p->vitalite);
-        fscanf(fichier,"%d",&p->force);
-        fscanf(fichier,"%d",&p->agilite);
-        fscanf(fichier,"%d",&p->dexterite);
-        fscanf(fichier,"%d",&p->esquive);
-        fscanf(fichier,"%d",&p->traterre);
-        fscanf(fichier,"%d",&p->multidmg);
-        fscanf(fichier,"%d",&p->trdef);
-        fscanf(fichier,"%d",pts);
-        fscanf(fichier,"%d",nb_ligne);
-        fscanf(fichier,"%d",vic);
-        fscanf(fichier,"%d",csoigner);
+        if(fscanf(fichier,"%s",p->nom)!= 1){
+          printf("erreur\n");
+        }
+        if(fscanf(fichier,"%d",&p->vie)!= 1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&p->vitalite)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&p->force)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&p->agilite)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&p->dexterite)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&p->esquive)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&p->traterre)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&p->multidmg)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&p->trdef)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",pts)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",nb_ligne)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",vic)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",csoigner)!=1){
+    printf("erreur\n");
+  }
 
 
-        fscanf(fichier,"%s",e->nom);
-        fscanf(fichier,"%d",&e->vie);
-        fscanf(fichier,"%d",&e->vitalite);
-        fscanf(fichier,"%d",&e->force);
-        fscanf(fichier,"%d",&e->agilite);
-        fscanf(fichier,"%d",&e->dexterite);
-        fscanf(fichier,"%d",&e->esquive);
-        fscanf(fichier,"%d",&e->traterre);
-        fscanf(fichier,"%d",&e->multidmg);
-        fscanf(fichier,"%d",&e->trdef);
-        retour = 2;
+
+
+  if(fscanf(fichier,"%s",e->nom)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&e->vie)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&e->vitalite)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&e->force)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&e->agilite)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&e->dexterite)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&e->esquive)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&e->traterre)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&e->multidmg)!=1){
+    printf("erreur\n");
+  }
+  if(fscanf(fichier,"%d",&e->trdef)!=1){
+    printf("erreur\n");
+    retour = 2;
       }
     }
     if (fichier !=NULL){
