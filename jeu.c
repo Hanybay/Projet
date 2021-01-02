@@ -13,8 +13,8 @@ void menu_principal(){
       printf("      1:Charger partie\n");
       printf("         2:Scores\n");
       printf("         3:Quitter\n");
-      vider_buffer();
     }while (scanf("%d", &choix) < 1 && (choix <0 || choix>4));
+    vider_buffer();
     switch(choix){
       case 0:
         nouvelle_partie();
@@ -71,12 +71,13 @@ void charger_partie(){
   int *victoire = &vic;
   pts = 0;
   comb = 0;
-  vic = 0;
+  vic = 1;
   p_prin= &principal;
   p_enne= &ennemi;
   principal = init_personnage();
   ennemi = init_personnage();
   load_game(pts, nb_combat, p_prin, p_enne, victoire, csoigner);
+  printf("\n\nTEST\n\n");
   if (p_prin->nom[0]!='\0'){
     lancer_jeu(p_prin, p_enne, pts, nb_combat, victoire, csoigner);
   }
@@ -106,7 +107,7 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
       amelioration(pts ,p_prin, asave, vic, csoigner);
     }
     *vic = 0;
-    if (save != 0){
+    if (*asave != 1){
       while(go == 0 && *vic == 0){
         while(nbcoup>4 || nbcoup<0){
           nbcoup= -1;

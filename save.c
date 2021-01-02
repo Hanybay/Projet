@@ -35,7 +35,7 @@ void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *c
   if (fichier != NULL){
 
 
-fprintf(fichier,"%s\n",p->nom);
+    fprintf(fichier,"%s\n",p->nom);
     fprintf(fichier,"%d\n",p->vie);
     fprintf(fichier,"%d\n",p->vitalite);
     fprintf(fichier,"%d\n",p->force);
@@ -73,39 +73,38 @@ fprintf(fichier,"%s\n",p->nom);
 
 
 void load_game(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *csoigner){
-
   FILE* fichier = NULL;
   int choix;
-  int retour = 0;
+  int retour;
+  retour =0;
   choix = -1;
   while (retour !=2){
     do{
       printf("De quel slot souhaitez vous charger la sauvegarde?\n");
       printf("Slot 0, Slot 1, Slot 2, retour\n");
-      vider_buffer();
     }while(scanf("%d", &choix) <1 && (choix<0 || choix >4));
-
+    vider_buffer();
      switch(choix){
        case 0:
-       fichier = fopen("savetest1.txt","r");
-       retour =1;
-         break;
+        fichier = fopen("savetest1.txt","r");
+        retour =1;
+        break;
        case 1:
-       fichier = fopen("savetest2.txt","r");
-       retour =1;
-         break;
+        fichier = fopen("savetest2.txt","r");
+        retour =1;
+        break;
        case 2:
-       retour = 1;
-       fichier = fopen("savetest3.txt","r");
-         break;
+        retour = 1;
+        fichier = fopen("savetest3.txt","r");
+        break;
       case 3:
-      retour = 2;
+        retour = 2;
         break;
     }
 
     if (retour != 2){
       if (fichier == NULL){
-        printf("Erreur lors de l'ouverture du fichier");
+        printf("Il n'y a pas de sauvegarde a cet emplacement! \n\n");
         retour = 0;
       }
 
@@ -126,8 +125,6 @@ void load_game(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *cs
         fscanf(fichier,"%d",csoigner);
 
 
-
-
         fscanf(fichier,"%s",e->nom);
         fscanf(fichier,"%d",&e->vie);
         fscanf(fichier,"%d",&e->vitalite);
@@ -141,6 +138,8 @@ void load_game(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *cs
         retour = 2;
       }
     }
+    if (fichier !=NULL){
+      fclose(fichier);
+    }
   }
-  fclose(fichier);
 }

@@ -10,7 +10,6 @@ personnages init_personnage(){
   p.agilite = 45 + aleat(-10, 10);  /*ennemi comme personnage principal*/
   p.dexterite = 45 + aleat(-10, 10);
   p.vitalite = 500 + aleat(-50, 50);
-  printf("%d", p.vitalite);
   p.vie = p.vitalite; /*A l'initialisation Pv = Pv max*/
   p.trdef = 0;
   p.esquive = 0;
