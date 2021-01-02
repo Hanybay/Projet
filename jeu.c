@@ -63,7 +63,6 @@ void charger_partie(){
   personnage p_enne;
   int points;
   int comb;
-  int n_save;
   int soin;
   int vic;
   int *csoigner = &soin;
@@ -78,7 +77,7 @@ void charger_partie(){
   principal = init_personnage();
   ennemi = init_personnage();
   load_game(pts, nb_combat, p_prin, p_enne, victoire, csoigner);
-  if (p_prin->nom[0]=!'\0'){
+  if (p_prin->nom[0]!='\0'){
     lancer_jeu(p_prin, p_enne, pts, nb_combat, victoire, csoigner);
   }
 }
@@ -95,21 +94,20 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
   coups coupenne;
   coup coupp;
   coup coupe;
-  int nbcoup;
+  int *asave = &save;
   coupp=&coupperso;
   coupe=&coupenne;
-  int *asave = &save
   continu = 1;
   save=0;
   while(continu >= 1){
     coupperso = init_coup();
     coupenne = init_coup();
-    if (vic ==1){
-      amelioration(pts ,p_prin, asave, csoigner);
+    if (*vic ==1){
+      amelioration(pts ,p_prin, asave, vic, csoigner);
     }
-    vic = 0;
+    *vic = 0;
     if (save != 0){
-      while(go == 0 && vic == 0){
+      while(go == 0 && *vic == 0){
         while(nbcoup>4 || nbcoup<0){
           nbcoup= -1;
           while (nbcoup >10 || nbcoup<0){
@@ -176,14 +174,14 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
           }
           else{
             if (p_enne->vie <= 0){
-              vic = 1;
+              *vic = 1;
               *pts += 10;
               *nb_combat+=1;
             }
           }
         }
 
-        printf("voulez vous continuer? 0 pour non, 1 pour oui\n")
+        printf("voulez vous continuer? 0 pour non, 1 pour oui\n");
         while (scanf("%d", &continu) != 1){
           vider_buffer();
           printf("voulez vous continuez? 0 pour non, 1 pour oui\n");
@@ -194,7 +192,7 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
       sauvegarde(pts,nb_combat,p_prin,p_enne,vic, csoigner);
       continu =0;
     }
-    vic = 0;
+    *vic = 0;
     go = 0;
     init_personnage_enne(p_enne,nb_combat);
   }

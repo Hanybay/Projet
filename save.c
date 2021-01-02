@@ -1,4 +1,5 @@
-include "save.h"
+#include "save.h"
+
 void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *csoigner){
 
   FILE* fichier = NULL;
@@ -107,8 +108,8 @@ if (fichier != NULL){
   fscanf(fichier,"%d",&p->trdef);
   fscanf(fichier,"%d",pts);
   fscanf(fichier,"%d",nb_ligne);
-  fscanf(fichier,"%d",*vic);
-  fscanf(fichier,"%d",*csoigner)
+  fscanf(fichier,"%d",vic);
+  fscanf(fichier,"%d",csoigner);
 
 
 

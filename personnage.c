@@ -107,7 +107,7 @@ void amelioration(int *pts, personnage p, int *asave, int *vic, int *csoigner){
       printf("   0 : Vie max, cout 3 points; 1 : soin 15 pour cent de vie, cout 1 point\n");
       printf("   2 : +1 force, 3:  +1 agilité, 4: +1 dexterite; cout 2 points\n");
       printf("   5 : regarder vos statistiques; 6 : quitter le menu d'amélioration\n");
-      printf("   7 : Sauvegarder et quitter\n\n")
+      printf("   7 : Sauvegarder et quitter\n\n");
       printf("Vous avez actuellement %d point(s)\n", *pts);
       printf("Que voulez vous améliorer?\n");
       vider_buffer();
@@ -212,7 +212,7 @@ void amelioration(int *pts, personnage p, int *asave, int *vic, int *csoigner){
       case 7:
         confirmer = 1;
         *asave =1;
-        break
+        break;
     }
     choix = -1;
     printf("\n");
