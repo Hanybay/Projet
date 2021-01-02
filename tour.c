@@ -2,14 +2,14 @@
 
 void decisionia(coup a, personnage ia, personnage perso){
   int decision;
-  decision = aleat(0, 100);
+  decision = aleat(0, 100+(perso->force+perso->agilite)/4);
   if (decision<75){
     attaque(a, ia, perso);
   }
-  if(decision<90 && decision>=75){
+  if(decision<90+(perso->force/4) && decision>=75){
     defense(a, ia, perso);
   }
-  if(decision<100 && decision>=90){
+  if(decision<100+((perso->force+perso->agilite)/4) && decision>=90+(perso->force/4)){
     esquive(a, ia, perso);
   }
   /*
@@ -19,26 +19,23 @@ void decisionia(coup a, personnage ia, personnage perso){
   if(decision<=100 && decision>=80){
     labourage(a, ia, perso);
   }
+  */
 }
-*/
-}
+
 
 void calcul_attaque(coup a, personnage aa, personnage bb){
   int precis, dmg;
   precis = aleat(0,100);
-  printf("le coup de %s est a ce point précis : %d\n", aa->nom, precis);
   /*La precision est calculé en lancant 1d100. Bien qu'on peut largement dépassé*/
   if (bb->esquive == 1){
     a->precision = a->precision - bb->agilite;
     printf("%s est dans l'état esquive! \n\n", bb->nom);
-
     /*le debuff de précision par l'esquive  est ici*/
     if (a->precision <10){
       a->precision = 10;
     /*La précision ne pas être plus bas que "10%""*/
     }
   }
-  printf("%d de precision sur le coup de %s\n", a->precision, aa->nom);
   if(a -> precision >= precis){
     /*Si l'attaque réussi, alors tout est appliqué*/
     dmg = a -> degats*(aa->multidmg/100);
@@ -100,8 +97,14 @@ void findetour(personnage a, personnage b){
     a->multidmg = (a->multidmg*60)/100;
   };
   /*Puis on baise de 1 le nombre de tour de défense*/
-  a->trdef -=1;
-  b->trdef -=1;
+  if(a->trdef >= 1){
+    a->trdef -=1;
+  }
+  if(b->trdef > 1){
+    b->trdef -=1;
+  };
+
+
 
   /*On regarde l'état esquive, si il a fonctionner on applique l'effet*/
   if(a->esquive == 2){
@@ -116,11 +119,11 @@ void findetour(personnage a, personnage b){
 
   /*Si on a recu l'état a terre alors on multiplie par 2 les dégats qu'on recevra*/
   if (a -> traterre > 0){
-    b -> multidmg = b -> multidmg*3;
+    b -> multidmg = b -> multidmg*2.5;
     a -> traterre -= 1;
   }
   if (b->traterre > 0){
-    a->multidmg = a->multidmg*3;
+    a->multidmg = a->multidmg*2.5;
     b->traterre -= 1;
   }
 }
@@ -130,15 +133,19 @@ void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
   /*On verifie la priorite de chaque coup, le plus elevé sera celui qui attaquera en premier*/
   if(a->priorite > b->priorite){
     calcul_attaque(a, aa, bb);
+    printf("\n");
     /*Dans le cas où l'adversaire n'a pas de pv, évidemment on ne calculera pas ses dégâts*/
     if (bb->vie >0){
       calcul_attaque(b, bb, aa);
+      printf("\n");
     }
   }
   if(a->priorite < b->priorite){
     calcul_attaque(b , bb, aa);
+    printf("\n");
     if (aa->vie >0){
       calcul_attaque(a, aa, bb);
+      printf("\n");
     }
   }
   /*Si les priorité sont égaux, alors on laissera la chance décider*/
@@ -146,14 +153,18 @@ void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
     egalite = aleat(0,100);
     if(egalite > 50){
       calcul_attaque(a, aa, bb);
+      printf("\n");
       if (bb->vie >0){
         calcul_attaque(b, bb, aa);
+        printf("\n");
       }
     }
     if(egalite <= 50){
       calcul_attaque(b, bb, aa);
+      printf("\n");
       if (aa->vie >0){
         calcul_attaque(a, aa, bb);
+        printf("\n");
       }
     }
   }

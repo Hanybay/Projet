@@ -23,7 +23,7 @@ void init_personnage_prin(personnage p){
   char string[255];
   int i;
   printf("Le nom de votre personnage en 19 lettres ou moins?  ");
-  while(scanf("%s ", string)<1){
+  while(scanf("%s", string)<1){
     printf("Le nom de votre personnage en 19 lettres ou moins?  ");
     vider_buffer();
   }
@@ -85,14 +85,17 @@ void affichage_etats(personnage p){
 }
 
 
-void amelioration(int *pts, personnage p){
+void amelioration(int *pts, personnage p, int *asave, int *vic, int *csoigner){
   int confirmer;
   int choix;
   confirmer = 0;
   choix = -1;
-  p -> vie = p->vie + ((10*p->vitalite)/100);
-  if (p->vie > p->vitalite){
-    p->vie = p->vitalite;
+  if (*csoigner!=1){
+    p -> vie = p->vie + ((10*p->vitalite)/100);
+    if (p->vie > p->vitalite){
+      p->vie = p->vitalite;
+    }
+    *csoigner=1;
   }
   printf ("Voici le menu d'amélioration pour le personnage:\n");
   printf ("Le menu d'amélioration vous permettera de vous donner des statistiques supplémentaires\n");
@@ -101,13 +104,14 @@ void amelioration(int *pts, personnage p){
   printf("Notez que chaque entree au menu d'amelioration vous regènera de 10 pourcent de votre vie maximum\n\n");
   while (confirmer==0){
     do{
-      printf("0 : Vie max, cout 3 points; 1 : soin 15 pour cent de vie, cout 1 point\n");
-      printf("2 : +1 force, 3:  +1 agilité, 4: +1 dexterite; cout 2 points\n");
-      printf("5 : regarder vos statistiques; 6 : quitter le menu d'amélioration\n");
+      printf("   0 : Vie max, cout 3 points; 1 : soin 15 pour cent de vie, cout 1 point\n");
+      printf("   2 : +1 force, 3:  +1 agilité, 4: +1 dexterite; cout 2 points\n");
+      printf("   5 : regarder vos statistiques; 6 : quitter le menu d'amélioration\n");
+      printf("   7 : Sauvegarder et quitter\n\n")
       printf("Vous avez actuellement %d point(s)\n", *pts);
       printf("Que voulez vous améliorer?\n");
       vider_buffer();
-    } while(scanf("%d", &choix) <1 && (choix<0 || choix >7));
+    } while(scanf("%d", &choix) <1 && (choix<0 || choix >8));
     switch(choix){
       case 0:
         if(p->vitalite==Vie_max){
@@ -203,7 +207,12 @@ void amelioration(int *pts, personnage p){
         break;
       case 6:
         confirmer=1;
+        *csoigner = 0;
         break;
+      case 7:
+        confirmer = 1;
+        *asave =1;
+        break
     }
     choix = -1;
     printf("\n");
