@@ -100,14 +100,15 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
   coupe=&coupenne;
   continu = 1;
   save=0;
+  coupperso = init_coup();
+  coupenne = init_coup();
   while(continu >= 1){
-    coupperso = init_coup();
-    coupenne = init_coup();
     if (*vic ==1){
       amelioration(pts ,p_prin, asave, vic, csoigner);
     }
-    *vic = 0;
+
     if (*asave != 1){
+      *vic = 0;
       while(go == 0 && *vic == 0){
         while(nbcoup>4 || nbcoup<0){
           nbcoup= -1;
@@ -180,13 +181,12 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
               *nb_combat+=1;
             }
           }
-        }
-
-        printf("voulez vous continuer? 0 pour non, 1 pour oui\n");
-        while (scanf("%d", &continu) != 1){
-          vider_buffer();
-          printf("voulez vous continuez? 0 pour non, 1 pour oui\n");
-        }
+        }  
+      }
+      printf("voulez vous continuer? 0 pour non, 1 pour oui\n");
+      while (scanf("%d", &continu) != 1){
+        vider_buffer();
+        printf("voulez vous continuez? 0 pour non, 1 pour oui\n");
       }
     }
     else{
