@@ -6,9 +6,12 @@ void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *c
   int choix;
   choix = -1;
 
+  do{
+    printf("Dans quel slot souhaitez vous faire la sauvegarde?\n");
+    printf("Slot 0, Slot 1, Slot 2\n");
+    vider_buffer();
+  }while(scanf("%d", &choix) <1 && (choix<0 || choix >3));
 
-  printf("Dans quel slot souhaitez vous faire la sauvegarde?\n");
-  while(scanf("%d", &choix) <1 && (choix<0 || choix >3));
    switch(choix){
      case 0:
      fichier = fopen("savetest1.txt","w+");
@@ -71,60 +74,73 @@ fprintf(fichier,"%s\n",p->nom);
 
 void load_game(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *csoigner){
 
-FILE* fichier = NULL;
-int choix;
-choix = -1;
+  FILE* fichier = NULL;
+  int choix;
+  int retour = 0;
+  choix = -1;
+  while (retour !=2){
+    do{
+      printf("De quel slot souhaitez vous charger la sauvegarde?\n");
+      printf("Slot 0, Slot 1, Slot 2, retour\n");
+      vider_buffer();
+    }while(scanf("%d", &choix) <1 && (choix<0 || choix >4));
+
+     switch(choix){
+       case 0:
+       fichier = fopen("savetest1.txt","r");
+       retour =1;
+         break;
+       case 1:
+       fichier = fopen("savetest2.txt","r");
+       retour =1;
+         break;
+       case 2:
+       retour = 1;
+       fichier = fopen("savetest3.txt","r");
+         break;
+      case 3:
+      retour = 2;
+        break;
+    }
+
+    if (retour != 2){
+      if (fichier == NULL){
+        printf("Erreur lors de l'ouverture du fichier");
+        retour = 0;
+      }
+
+      if (fichier != NULL){
+        fscanf(fichier,"%s",p->nom);
+        fscanf(fichier,"%d",&p->vie);
+        fscanf(fichier,"%d",&p->vitalite);
+        fscanf(fichier,"%d",&p->force);
+        fscanf(fichier,"%d",&p->agilite);
+        fscanf(fichier,"%d",&p->dexterite);
+        fscanf(fichier,"%d",&p->esquive);
+        fscanf(fichier,"%d",&p->traterre);
+        fscanf(fichier,"%d",&p->multidmg);
+        fscanf(fichier,"%d",&p->trdef);
+        fscanf(fichier,"%d",pts);
+        fscanf(fichier,"%d",nb_ligne);
+        fscanf(fichier,"%d",vic);
+        fscanf(fichier,"%d",csoigner);
 
 
-printf("Dans quel slot souhaitez vous faire la sauvegarde?\n");
-while(scanf("%d", &choix) <1 && (choix<0 || choix >3));
- switch(choix){
-   case 0:
-   fichier = fopen("savetest1.txt","r");
-     break;
-   case 1:
-   fichier = fopen("savetest2.txt","r");
-     break;
-   case 2:
-   fichier = fopen("savetest3.txt","r");
-     break;
+
+
+        fscanf(fichier,"%s",e->nom);
+        fscanf(fichier,"%d",&e->vie);
+        fscanf(fichier,"%d",&e->vitalite);
+        fscanf(fichier,"%d",&e->force);
+        fscanf(fichier,"%d",&e->agilite);
+        fscanf(fichier,"%d",&e->dexterite);
+        fscanf(fichier,"%d",&e->esquive);
+        fscanf(fichier,"%d",&e->traterre);
+        fscanf(fichier,"%d",&e->multidmg);
+        fscanf(fichier,"%d",&e->trdef);
+        retour = 2;
+      }
+    }
   }
-
-
-if (fichier == NULL){
-  printf("Erreur lors de l'ouverture du fichier");
-}
-
-if (fichier != NULL){
-  fscanf(fichier,"%s",p->nom);
-  fscanf(fichier,"%d",&p->vie);
-  fscanf(fichier,"%d",&p->vitalite);
-  fscanf(fichier,"%d",&p->force);
-  fscanf(fichier,"%d",&p->agilite);
-  fscanf(fichier,"%d",&p->dexterite);
-  fscanf(fichier,"%d",&p->esquive);
-  fscanf(fichier,"%d",&p->traterre);
-  fscanf(fichier,"%d",&p->multidmg);
-  fscanf(fichier,"%d",&p->trdef);
-  fscanf(fichier,"%d",pts);
-  fscanf(fichier,"%d",nb_ligne);
-  fscanf(fichier,"%d",vic);
-  fscanf(fichier,"%d",csoigner);
-
-
-
-
-  fscanf(fichier,"%s",e->nom);
-  fscanf(fichier,"%d",&e->vie);
-  fscanf(fichier,"%d",&e->vitalite);
-  fscanf(fichier,"%d",&e->force);
-  fscanf(fichier,"%d",&e->agilite);
-  fscanf(fichier,"%d",&e->dexterite);
-  fscanf(fichier,"%d",&e->esquive);
-  fscanf(fichier,"%d",&e->traterre);
-  fscanf(fichier,"%d",&e->multidmg);
-  fscanf(fichier,"%d",&e->trdef);
-}
-fclose(fichier);
-
+  fclose(fichier);
 }
