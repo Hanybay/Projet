@@ -69,7 +69,7 @@ void charger_partie(){
   int *pts = &points;
   int *nb_combat = &comb;
   int *victoire = &vic;
-  pts = 0;
+  points = 0;
   comb = 0;
   vic = 1;
   p_prin= &principal;
