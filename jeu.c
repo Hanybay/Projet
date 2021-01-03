@@ -119,8 +119,8 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
               printf("3 = coup de pied, 4 = Mettre a terre, 5 = explications\n");
               printf("6 = Vos stats, 7 = stats ennemi, 8 = sauvegarde\n");
               printf("9 = sauvegarder et quitter\n");
-              vider_buffer();
             }while (scanf("%d", &nbcoup) < 1);
+            vider_buffer();
           }
           switch(nbcoup){
             case 0:

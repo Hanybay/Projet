@@ -33,25 +33,27 @@ void init_personnage_prin(personnage p){
 }
 
 void init_personnage_enne(personnage p,int *nb_ligne){
-int i;
-int j, difficulte;
-difficulte = (*nb_ligne)/3;
-if (difficulte >400){
-  difficulte = 400;
-}
-j = ( *nb_ligne % 13) + 1;
+  int i;
+  int j, difficulte;
+  FILE* fichier = NULL;
+  fichier = fopen("perso.txt","r");
 
-FILE* fichier = NULL;
-fichier = fopen("perso.txt","r");
+  difficulte = (*nb_ligne)/3;
+  if (difficulte >400){
+    difficulte = 400;
+  }
+  j = ( *nb_ligne % 13) + 1;
 
-if(fichier==NULL){
-  printf("erreur");
-  exit(-1);
-}
+
+
+  if(fichier==NULL){
+    printf("erreur");
+    exit(-1);
+  }
 
   if (fichier != NULL){
-  for(i = 0; i < j; i++){
-    fscanf(fichier, "%s", p->nom);
+    for(i = 0; i < j; i++){
+      fscanf(fichier, "%s", p->nom);
     }
   fclose(fichier);
   }
@@ -109,8 +111,8 @@ void amelioration(int *pts, personnage p, int *asave, int *vic, int *csoigner){
       printf("   7 : Sauvegarder et quitter\n\n");
       printf("Vous avez actuellement %d point(s)\n", *pts);
       printf("Que voulez vous améliorer?\n");
-      vider_buffer();
     } while(scanf("%d", &choix) <1 && (choix<0 || choix >8));
+    vider_buffer();
     switch(choix){
       case 0:
         if(p->vitalite==Vie_max){
