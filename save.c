@@ -1,7 +1,7 @@
 
 #include "save.h"
 
-void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *csoigner){
+void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *csoigner, int *score){
 
   FILE* fichier = NULL;
   int choix;
@@ -63,6 +63,7 @@ void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *c
         fprintf(fichier,"%d\n",*nb_ligne);
         fprintf(fichier,"%d\n",*vic);
         fprintf(fichier,"%d\n",*csoigner);
+        fprintf(fichier,"%d\n",*score);
 
 
 
@@ -89,7 +90,7 @@ void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *c
 
 
 
-void load_game(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *csoigner){
+void load_game(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *csoigner, int *score){
   FILE* fichier = NULL;
   int choix;
   int retour;
@@ -168,6 +169,9 @@ void load_game(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *cs
           printf("erreur\n");
         }
         if(fscanf(fichier,"%d",csoigner)!=1){
+          printf("erreur\n");
+        }
+        if(fscanf(fichier,"%d",score)!=1){
           printf("erreur\n");
         }
 

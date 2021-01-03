@@ -39,6 +39,8 @@ void nouvelle_partie(){
   int points;
   int comb;
   int vic;
+  int score;
+  int *scoring = &score;
   int *victoire = &vic;
   int soin;
   int *csoigner = &soin;
@@ -47,13 +49,14 @@ void nouvelle_partie(){
   points = 20;
   comb = 0;
   vic = 1;
+  score = 0;
   p_prin= &principal;
   p_enne= &ennemi;
   principal = init_personnage();
   ennemi = init_personnage();
   init_personnage_prin(p_prin);
   init_personnage_enne(p_enne,nb_combat);
-  lancer_jeu(p_prin, p_enne, pts, nb_combat, victoire, csoigner);
+  lancer_jeu(p_prin, p_enne, pts, nb_combat, victoire, csoigner, scoring);
 }
 
 void charger_partie(){
@@ -65,6 +68,8 @@ void charger_partie(){
   int comb;
   int soin;
   int vic;
+  int score;
+  int *scoring = &score;
   int *csoigner = &soin;
   int *pts = &points;
   int *nb_combat = &comb;
@@ -72,14 +77,15 @@ void charger_partie(){
   points = 0;
   comb = 0;
   vic = 1;
+  score =0;
   p_prin= &principal;
   p_enne= &ennemi;
   principal = init_personnage();
   ennemi = init_personnage();
-  load_game(pts, nb_combat, p_prin, p_enne, victoire, csoigner);
+  load_game(pts, nb_combat, p_prin, p_enne, victoire, csoigner, scoring);
   printf("\n\nTEST\n\n");
   if (p_prin->nom[0]!='\0'){
-    lancer_jeu(p_prin, p_enne, pts, nb_combat, victoire, csoigner);
+    lancer_jeu(p_prin, p_enne, pts, nb_combat, victoire, csoigner, scoring);
   }
 }
 
@@ -89,7 +95,7 @@ void scores(){
 
 
 
-void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, int *vic, int *csoigner){
+void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, int *vic, int *csoigner, int *score){
   int go, continu, nbcoup, save;
   coups coupperso;
   coups coupenne;
@@ -147,10 +153,10 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
               affichage_stats(p_enne);
               break;
             case 8 :
-              sauvegarde(pts,nb_combat,p_prin,p_enne, vic, csoigner);
+              sauvegarde(pts,nb_combat,p_prin,p_enne, vic, csoigner, score);
               break;
             case 9 :
-              sauvegarde(pts,nb_combat,p_prin,p_enne, vic, csoigner);
+              sauvegarde(pts,nb_combat,p_prin,p_enne, vic, csoigner, score);
               continu =0;
               go=1;
               break;
@@ -167,10 +173,6 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
           printf("\n\ncalcul du tour\n");
 
           calcul_du_tour(coupp, coupe, p_prin, p_enne);
-          printf("Affichage des stats du personnage principal\n");
-          affichage_stats(p_prin);
-          printf("Affichage des stats de l'ennemi\n");
-          affichage_stats(p_enne);
           if (p_prin->vie <= 0){
             go = 1;
           }
@@ -179,6 +181,7 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
               *vic = 1;
               *pts += 10;
               *nb_combat+=1;
+              *score += 200+((p_prin->vie*100)/p_prin->vitalite);
             }
           }
         }
@@ -192,7 +195,7 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
       }
     }
     else{
-      sauvegarde(pts,nb_combat,p_prin,p_enne,vic, csoigner);
+      sauvegarde(pts,nb_combat,p_prin,p_enne,vic, csoigner, score);
       continu =0;
     }
     *vic = 0;
