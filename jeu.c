@@ -108,7 +108,6 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
     }
 
     if (*asave != 1){
-      *vic = 0;
       while(go == 0 && *vic == 0){
         while((nbcoup>4 || nbcoup<0) && nbcoup != 9){
           nbcoup= -1;
