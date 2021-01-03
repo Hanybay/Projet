@@ -16,16 +16,16 @@ void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *c
     vider_buffer();
     switch(choix){
       case 0:
-      fichier = fopen("savetest1.txt","w+");
+      fichier = fopen("save0.txt","w+");
       retour =1;
       break;
       case 1:
-      fichier = fopen("savetest2.txt","w+");
+      fichier = fopen("save1.txt","w+");
       retour =1;
       break;
       case 2:
       retour = 1;
-      fichier = fopen("savetest3.txt","w+");
+      fichier = fopen("save2.txt","w+");
       break;
       case 3:
       retour = 2;
@@ -34,7 +34,7 @@ void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *c
 
     if (retour != 2){
       if (fichier == NULL){
-        printf("Impossible de sauvegarder a cet emplacement! \n\n");
+        printf("Impossible de sauvegarder à cet emplacement! \n\n");
         retour = 0;
       }
 
@@ -42,7 +42,7 @@ void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *c
 
     if (retour != 2){
       if (fichier == NULL){
-        printf("Il n'y a pas de sauvegarde a cet emplacement! \n\n");
+        printf("Il n'y a pas de sauvegarde à cet emplacement! \n\n");
         retour = 0;
       }
 
@@ -83,6 +83,7 @@ void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *c
       }
 
     }
+    retour = 2;
   }
 }
 
@@ -102,21 +103,22 @@ void load_game(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *cs
     vider_buffer();
     switch(choix){
       case 0:
-      fichier = fopen("savetest1.txt","r");
+      fichier = fopen("save0.txt","r");
       retour =1;
       break;
       case 1:
-      fichier = fopen("savetest2.txt","r");
+      fichier = fopen("save1.txt","r");
       retour =1;
       break;
       case 2:
       retour = 1;
-      fichier = fopen("savetest3.txt","r");
+      fichier = fopen("save2.txt","r");
       break;
       case 3:
       retour = 2;
       break;
     }
+
 
     if (retour != 2){
       if (fichier == NULL){
@@ -128,6 +130,7 @@ void load_game(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *cs
         if(fscanf(fichier,"%s",p->nom)!= 1){
           printf("erreur\n");
         }
+
         if(fscanf(fichier,"%d",&p->vie)!= 1){
           printf("erreur\n");
         }
@@ -201,11 +204,13 @@ void load_game(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *cs
         if(fscanf(fichier,"%d",&e->trdef)!=1){
           printf("erreur\n");
           retour = 2;
+          choix  = -1;
         }
       }
       if (fichier !=NULL){
         fclose(fichier);
       }
+      retour = 2;
     }
   }
 }
