@@ -49,10 +49,12 @@ if(fichier==NULL){
   exit(-1);
 }
 
-  if (fichier != NULL){
+if (fichier != NULL){
   for(i = 0; i < j; i++){
-    fscanf(fichier, "%s", p->nom);
+    if(fscanf(fichier, "%s", p->nom)!=1){
+      printf("erreur\n");
     }
+  }
   fclose(fichier);
   }
   p->force = 45 + aleat(-10+difficulte/2, 10+difficulte/2);  /*Les stats sont tiré aléatoirement a chaque nouvelle partie*/
