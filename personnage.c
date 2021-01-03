@@ -53,7 +53,9 @@ void init_personnage_enne(personnage p,int *nb_ligne){
 
   if (fichier != NULL){
     for(i = 0; i < j; i++){
-      fscanf(fichier, "%s", p->nom);
+      if (fscanf(fichier, "%s", p->nom)!=1){
+        printf("erreur\n");
+      }
     }
   fclose(fichier);
   }
@@ -209,6 +211,7 @@ void amelioration(int *pts, personnage p, int *asave, int *vic, int *csoigner){
       case 6:
         confirmer=1;
         *csoigner = 0;
+        *vic =0;
         break;
       case 7:
         confirmer = 1;
