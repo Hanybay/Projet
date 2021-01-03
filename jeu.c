@@ -91,7 +91,29 @@ void charger_partie(){
 
 void scores(){
   /*Charger et afficher les fichier sauvegarder*/
+  int i,j;
+
+  FILE* fichier = NULL;
+  fichier = fopen("score.txt","r");
+  printf("\n");
+
+  if(fichier==NULL){
+    printf("ce slot n'existe pas");
+    exit(-1);
+  }
+  else {
+    for(i=0; i < 10;i++){
+      if(fscanf(fichier,"%d\n",&j)!=1){
+        printf("%d erreur\n",i);
+      }
+      printf("%d : %d\n",i+1,j);
+    }
+  }
+
+  fclose(fichier);
 }
+
+
 
 
 
@@ -175,6 +197,8 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
           calcul_du_tour(coupp, coupe, p_prin, p_enne);
           if (p_prin->vie <= 0){
             go = 1;
+            save_score(score);
+            continu = 0;
           }
           else{
             if (p_enne->vie <= 0){
@@ -184,13 +208,7 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
               *score += 200+((p_prin->vie*100)/p_prin->vitalite);
             }
           }
-        }
-      }
-      if(continu >=1){
-        printf("voulez vous continuer? 0 pour non, 1 pour oui\n");
-        while (scanf("%d", &continu) != 1){
-          vider_buffer();
-          printf("voulez vous continuez? 0 pour non, 1 pour oui\n");
+
         }
       }
     }
@@ -198,7 +216,6 @@ void lancer_jeu(personnage p_prin, personnage p_enne, int *pts, int *nb_combat, 
       sauvegarde(pts,nb_combat,p_prin,p_enne,vic, csoigner, score);
       continu =0;
     }
-    *vic = 0;
     go = 0;
     init_personnage_enne(p_enne,nb_combat);
   }

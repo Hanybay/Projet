@@ -2,14 +2,14 @@
 
 void decisionia(coup a, personnage ia, personnage perso){
   int decision;
-  decision = aleat(0, 100+(perso->force+perso->agilite)/4);
+  decision = aleat(0, 100+(perso->force+perso->agilite)/8);
   if (decision<75){
     attaque(a, ia, perso);
   }
-  if(decision<90+(perso->force/4) && decision>=75){
+  if(decision<90+(perso->force/8) && decision>=75){
     defense(a, ia, perso);
   }
-  if(decision<100+((perso->force+perso->agilite)/4) && decision>=90+(perso->force/4)){
+  if(decision<100+((perso->force+perso->agilite)/8) && decision>=90+(perso->force/8)){
     esquive(a, ia, perso);
   }
   /*
@@ -38,7 +38,7 @@ void calcul_attaque(coup a, personnage aa, personnage bb){
   }
   if(a -> precision >= precis){
     /*Si l'attaque réussi, alors tout est appliqué*/
-    dmg = a -> degats*(aa->multidmg/100);
+    dmg = (a -> degats*aa->multidmg)/100;
     bb -> vie -= dmg;
     if(dmg>0){
       printf("%s a perdu %d pvs!\n", bb->nom, dmg);

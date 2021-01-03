@@ -1,7 +1,53 @@
 
 #include "save.h"
 
-void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *csoigner, int *score){
+void save_score(personnage p,int *scoring){
+  /*Charger et afficher les fichier sauvegarder*/
+  int tab_score[10];
+  int i;
+  int j = 0;
+  int k = 0;
+
+  FILE* fichier = NULL;
+  fichier = fopen("score.txt","r+");
+  for(i=0; i < 10;i++){
+    if(fscanf(fichier,"%d\n",&tab_score[i])!=1){
+      printf("%d erreur\n",i);
+    }
+  }
+  for(i=0; i < 10;i++){
+    k = i;
+    if(tab_score[i] < *scoring){
+      j = tab_score[i];
+      tab_score[i] = *scoring;
+      i = 11;
+    }
+  }
+  for(i=k+1; i<10;i++){
+    k = tab_score[i];
+    tab_score[i] = j;
+    j = k;
+  }
+  fclose(fichier);
+  fichier = fopen("score.txt","r+");
+
+  if(fichier==NULL){
+    printf("ce slot n'existe pas");
+    exit(-1);
+  }
+
+  if (fichier !=NULL){
+    for(i = 0; i < 10; i++){
+      fprintf(fichier, "%d\n",tab_score[i]);
+    }
+  }
+  fclose(fichier);
+}
+
+
+
+
+void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *csoigner, int *scoring){
 
   FILE* fichier = NULL;
   int choix;
@@ -63,7 +109,7 @@ void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *c
         fprintf(fichier,"%d\n",*nb_ligne);
         fprintf(fichier,"%d\n",*vic);
         fprintf(fichier,"%d\n",*csoigner);
-        fprintf(fichier,"%d\n",*score);
+        fprintf(fichier,"%d\n",*scoring);
 
 
 
@@ -80,6 +126,7 @@ void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *c
         fprintf(fichier,"%d\n",e->trdef);
 
         fclose(fichier);
+        save_score(scoring);
 
       }
 
@@ -90,7 +137,7 @@ void sauvegarde(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *c
 
 
 
-void load_game(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *csoigner, int *score){
+void load_game(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *csoigner, int *scoring){
   FILE* fichier = NULL;
   int choix;
   int retour;
@@ -171,7 +218,7 @@ void load_game(int *pts,int *nb_ligne,personnage p,personnage e,int *vic,int *cs
         if(fscanf(fichier,"%d",csoigner)!=1){
           printf("erreur\n");
         }
-        if(fscanf(fichier,"%d",score)!=1){
+        if(fscanf(fichier,"%d",scoring)!=1){
           printf("erreur\n");
         }
 
