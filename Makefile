@@ -2,7 +2,7 @@ CC=gcc
 CFLAGS=-W -Wall -std=c89 -pedantic -O3
 
 
-
+all : general clean
 
 general : utilitaire.o jeu.o tour.o coup.o personnage.o save.o general.o
 	$(CC) $(CFLAGS) utilitaire.o jeu.o tour.o coup.o personnage.o save.o general.o -o general
@@ -28,3 +28,6 @@ jeu.o : jeu.c jeu.h
 
 general.o : general.c jeu.h personnage.h coup.h utilitaire.h tour.h save.h
 	$(CC) $(CFLAGS) -c general.c
+
+clean :
+	rm -r *.o
