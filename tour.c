@@ -126,6 +126,18 @@ void findetour(personnage a, personnage b){
     a->multidmg = a->multidmg*2.5;
     b->traterre -= 1;
   }
+  if (b->vie <=0){
+    a->esquive =0;
+    a->multidmg = 100;
+    a->trdef =0;
+    a->traterre=0;
+  }
+  if (a->vie <=0){
+    b->esquive =0;
+    b->multidmg = 100;
+    b->trdef =0;
+    b->traterre=0;
+  }
 }
 
 void calcul_du_tour(coup a, coup b, personnage aa, personnage bb){
