@@ -1,7 +1,8 @@
 
+
 #include "save.h"
 
-void save_score(personnage p,int *scoring){
+void save_score(int *scoring){
   /*Charger et afficher les fichier sauvegarder*/
   int tab_score[10];
   int i;
