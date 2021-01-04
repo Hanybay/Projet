@@ -51,12 +51,12 @@ void init_personnage_enne(personnage p,int *nb_ligne){
     exit(-1);
   }
 
-  if (fichier != NULL){
-    for(i = 0; i < j; i++){
-      if (fscanf(fichier, "%s", p->nom)!=1){
-        printf("erreur\n");
-      }
+if (fichier != NULL){
+  for(i = 0; i < j; i++){
+    if(fscanf(fichier, "%s", p->nom)!=1){
+      printf("erreur\n");
     }
+  }
   fclose(fichier);
   }
   p->force = 45 + aleat(-10+difficulte/2, 10+difficulte/2);  /*Les stats sont tiré aléatoirement a chaque nouvelle partie*/
